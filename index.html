@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Landing Page</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: url('tdmain.jpg') no-repeat center center fixed;
+      background-size: cover;
+      position: relative;
+    }
+
+    .thumbnail {
+      position: absolute;
+      width: 150px;
+      height: 150px;
+      background-size: cover;
+      background-position: center;
+      border: 3px solid #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      transition: transform 0.3s;
+    }
+
+    .thumbnail:hover {
+      transform: scale(1.05);
+    }
+
+    /* Position these based on the location of "white box #2" in your image */
+    #game1 {
+      top: 30%;
+      left: 35%;
+      background-image: url('thumb1.jpg');
+    }
+
+    #game2 {
+      top: 30%;
+      left: 55%;
+      background-image: url('thumb2.jpg');
+    }
+
+    .sound-toggle {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background-color: rgba(0, 0, 0, 0.6);
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+
+  <a href="https://eddiehi57.github.io/red-light-green-light/" target="_blank" class="thumbnail" id="game1"></a>
+  <a href="https://eddiehi57.github.io/minglegame/" target="_blank" class="thumbnail" id="game2"></a>
+
+  <button class="sound-toggle" onclick="toggleSound()">🔊 Music</button>
+
+  <audio id="background-audio" loop>
+    <source src="bckgroundmusic.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <script>
+    const audio = document.getElementById('background-audio');
+    let isPlaying = false;
+
+    function toggleSound() {
+      if (isPlaying) {
+        audio.pause();
+      } else {
+        audio.play();
+      }
+      isPlaying = !isPlaying;
+    }
+  </script>
+
+</body>
+</html>
