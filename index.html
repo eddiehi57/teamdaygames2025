@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Landing Page</title>
   <style>
     html, body {
@@ -13,44 +13,55 @@
     }
 
     body {
-      background: url('tdmain.jpg') no-repeat center center fixed;
+      background: url('tdmainpage.jpg') no-repeat center center fixed;
       background-size: cover;
       position: relative;
     }
 
-    .thumbnail {
+    .preview {
       position: absolute;
-      width: 150px;
-      height: 150px;
-      background-size: cover;
-      background-position: center;
+      width: 220px;
+      height: 140px;
       border: 3px solid #fff;
-      border-radius: 12px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      overflow: hidden;
+    }
+
+    .preview iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      pointer-events: none; /* Prevent interaction with iframe */
+    }
+
+    .preview:hover {
+      transform: scale(1.03);
       transition: transform 0.3s;
     }
 
-    .thumbnail:hover {
-      transform: scale(1.05);
+    .preview-link {
+      position: absolute;
+      width: 220px;
+      height: 140px;
+      z-index: 10;
     }
 
-    /* Position these based on the location of "white box #2" in your image */
+    /* Adjust positions based on your image layout */
     #game1 {
       top: 30%;
-      left: 35%;
-      background-image: url('thumb1.jpg');
+      left: 33%;
     }
 
     #game2 {
       top: 30%;
-      left: 55%;
-      background-image: url('thumb2.jpg');
+      left: 56%;
     }
 
     .sound-toggle {
       position: absolute;
-      top: 20px;
-      right: 20px;
+      bottom: 20px;
+      left: 20px;
       background-color: rgba(0, 0, 0, 0.6);
       color: white;
       border: none;
@@ -58,18 +69,30 @@
       border-radius: 20px;
       cursor: pointer;
       font-size: 16px;
+      z-index: 20;
     }
   </style>
 </head>
 <body>
 
-  <a href="https://eddiehi57.github.io/red-light-green-light/" target="_blank" class="thumbnail" id="game1"></a>
-  <a href="https://eddiehi57.github.io/minglegame/" target="_blank" class="thumbnail" id="game2"></a>
+  <!-- Game 1 Preview and Link -->
+  <div class="preview" id="game1">
+    <iframe src="https://eddiehi57.github.io/red-light-green-light/" title="Red Light Green Light Preview"></iframe>
+    <a class="preview-link" href="https://eddiehi57.github.io/red-light-green-light/" target="_blank"></a>
+  </div>
 
+  <!-- Game 2 Preview and Link -->
+  <div class="preview" id="game2">
+    <iframe src="https://eddiehi57.github.io/minglegame/" title="Mingle Game Preview"></iframe>
+    <a class="preview-link" href="https://eddiehi57.github.io/minglegame/" target="_blank"></a>
+  </div>
+
+  <!-- Sound Toggle Button -->
   <button class="sound-toggle" onclick="toggleSound()">🔊 Music</button>
 
+  <!-- Background Music -->
   <audio id="background-audio" loop>
-    <source src="bckgroundmusic.mp3" type="audio/mpeg">
+    <source src="bckgroundmusic.mp3" type="audio/mpeg" />
     Your browser does not support the audio element.
   </audio>
 
@@ -89,4 +112,3 @@
 
 </body>
 </html>
-
