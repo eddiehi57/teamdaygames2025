@@ -18,44 +18,37 @@
       position: relative;
     }
 
-    .preview {
+    .thumbnail-link {
       position: absolute;
       width: 220px;
       height: 140px;
       border: 3px solid #fff;
       border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
       overflow: hidden;
-    }
-
-    .preview iframe {
-      width: 100%;
-      height: 100%;
-      border: none;
-      pointer-events: none; /* Prevent interaction with iframe */
-    }
-
-    .preview:hover {
-      transform: scale(1.03);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
       transition: transform 0.3s;
     }
 
-    .preview-link {
-      position: absolute;
-      width: 220px;
-      height: 140px;
-      z-index: 10;
+    .thumbnail-link:hover {
+      transform: scale(1.05);
     }
 
-    /* Adjust positions based on your image layout */
-    #game1 {
-      top: 30%;
-      left: 33%;
+    .thumbnail-link img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
     }
 
-    #game2 {
-      top: 30%;
-      left: 56%;
+    /* Position thumbnails to match white boxes on your image */
+    #thumb1 {
+      top: 28%;
+      left: 18%;
+    }
+
+    #thumb2 {
+      top: 29%;
+      left: 67%;
     }
 
     .sound-toggle {
@@ -75,17 +68,15 @@
 </head>
 <body>
 
-  <!-- Game 1 Preview and Link -->
-  <div class="preview" id="game1">
-    <iframe src="https://eddiehi57.github.io/red-light-green-light/" title="Red Light Green Light Preview"></iframe>
-    <a class="preview-link" href="https://eddiehi57.github.io/red-light-green-light/" target="_blank"></a>
-  </div>
+  <!-- Red Light Green Light Thumbnail (Box #1) -->
+  <a href="https://eddiehi57.github.io/red-light-green-light/" target="_blank" class="thumbnail-link" id="thumb1">
+    <img src="redlightthumb.jpg" alt="Red Light Green Light" />
+  </a>
 
-  <!-- Game 2 Preview and Link -->
-  <div class="preview" id="game2">
-    <iframe src="https://eddiehi57.github.io/minglegame/" title="Mingle Game Preview"></iframe>
-    <a class="preview-link" href="https://eddiehi57.github.io/minglegame/" target="_blank"></a>
-  </div>
+  <!-- Mingle Game Thumbnail (Box #3) -->
+  <a href="https://eddiehi57.github.io/minglegame/" target="_blank" class="thumbnail-link" id="thumb2">
+    <img src="minglethumb.jpg" alt="Mingle Game" />
+  </a>
 
   <!-- Sound Toggle Button -->
   <button class="sound-toggle" onclick="toggleSound()">🔊 Music</button>
