@@ -110,17 +110,17 @@
   <!-- Thumbnails Centered -->
   <div class="thumbnail-container" id="thumbnailContainer">
     <!-- Red Light Green Light -->
-    <a href="https://eddiehi57.github.io/red-light-green-light/" target="_blank" class="thumbnail-link" id="thumb1">
+    <a href="https://eddiehi57.github.io/red-light-green-light/" target="_blank" class="thumbnail-link">
       <img src="redlightthumb.jpg" alt="Red Light Green Light" />
     </a>
 
     <!-- Mingle Game -->
-    <a href="https://eddiehi57.github.io/minglegame/" target="_blank" class="thumbnail-link" id="thumb2">
+    <a href="https://eddiehi57.github.io/minglegame/" target="_blank" class="thumbnail-link">
       <img src="minglethumb.jpg" alt="Mingle Game" />
     </a>
 
-    <!-- Bridge Button -->
-    <div class="thumbnail-link" id="bridgeBtn" onclick="enterBridgeMode()">
+    <!-- Bridge Game (Triggers Background Change) -->
+    <div class="thumbnail-link" onclick="enterBridgeMode()">
       <img src="bridgepage.jpg" alt="Bridge Game" />
     </div>
   </div>
@@ -160,15 +160,27 @@
     }
 
     function enterBridgeMode() {
+      // Change background image
       document.body.style.backgroundImage = "url('bridgepage.jpg')";
+
+      // Hide thumbnails
       document.getElementById('thumbnailContainer').style.display = 'none';
+
+      // Show bridge controls
       document.getElementById('bridgeControls').style.display = 'flex';
+
+      // Hide any lingering step message
       document.getElementById('step-message').style.display = 'none';
     }
 
     function exitBridgeMode() {
+      // Revert to original background
       document.body.style.backgroundImage = "url('tdmainpage.jpg')";
+
+      // Show thumbnails again
       document.getElementById('thumbnailContainer').style.display = 'flex';
+
+      // Hide bridge controls and step message
       document.getElementById('bridgeControls').style.display = 'none';
       document.getElementById('step-message').style.display = 'none';
     }
