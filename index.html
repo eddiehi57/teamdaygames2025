@@ -66,7 +66,7 @@
     }
 
     .bridge-controls {
-      display: none;
+      display: none; /* hidden initially */
       position: absolute;
       bottom: 40px;
       left: 50%;
@@ -74,6 +74,10 @@
       gap: 20px;
       z-index: 10;
       display: flex;
+    }
+
+    .bridge-controls.hidden {
+      display: none;
     }
 
     .bridge-controls button {
@@ -98,7 +102,7 @@
       top: 40%;
       left: 50%;
       transform: translate(-50%, -50%);
-      font-size: 60px;
+      font-size: 90px; /* increased from 60px */
       font-weight: bold;
       color: hotpink;
       z-index: 10;
@@ -126,13 +130,13 @@
   </div>
 
   <!-- Bridge Controls -->
-  <div class="bridge-controls" id="bridgeControls">
+  <div class="bridge-controls hidden" id="bridgeControls">
     <button onclick="playStep()">STEP</button>
     <button onclick="exitBridgeMode()">MAIN PAGE</button>
   </div>
 
   <!-- Step Message -->
-  <div id="step-message">STEP A or B</div>
+  <div id="step-message">STEP A or B!</div>
 
   <!-- Music Button -->
   <button class="sound-toggle" onclick="toggleSound()">🔊 Music</button>
@@ -160,28 +164,28 @@
     }
 
     function enterBridgeMode() {
-      // Change background image
+      // Change background
       document.body.style.backgroundImage = "url('bridgepage.jpg')";
 
       // Hide thumbnails
       document.getElementById('thumbnailContainer').style.display = 'none';
 
       // Show bridge controls
-      document.getElementById('bridgeControls').style.display = 'flex';
+      document.getElementById('bridgeControls').classList.remove('hidden');
 
-      // Hide any lingering step message
+      // Hide step message if open
       document.getElementById('step-message').style.display = 'none';
     }
 
     function exitBridgeMode() {
-      // Revert to original background
+      // Restore main background
       document.body.style.backgroundImage = "url('tdmainpage.jpg')";
 
-      // Show thumbnails again
+      // Show thumbnails
       document.getElementById('thumbnailContainer').style.display = 'flex';
 
-      // Hide bridge controls and step message
-      document.getElementById('bridgeControls').style.display = 'none';
+      // Hide bridge controls and message
+      document.getElementById('bridgeControls').classList.add('hidden');
       document.getElementById('step-message').style.display = 'none';
     }
 
