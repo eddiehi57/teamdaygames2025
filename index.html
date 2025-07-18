@@ -19,8 +19,17 @@
       position: relative;
     }
 
-    .thumbnail-link {
+    .thumbnail-container {
       position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 40px;
+      z-index: 5;
+    }
+
+    .thumbnail-link {
       width: 220px;
       height: 140px;
       border: 3px solid #fff;
@@ -28,6 +37,7 @@
       overflow: hidden;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
       transition: transform 0.3s;
+      cursor: pointer;
     }
 
     .thumbnail-link:hover {
@@ -40,10 +50,6 @@
       object-fit: cover;
       display: block;
     }
-
-    #thumb1 { bottom: 20px; left: 20%; }
-    #thumb2 { bottom: 20px; left: 60%; }
-    #bridgeBtn { bottom: 20px; left: 2%; }
 
     .sound-toggle {
       position: absolute;
@@ -67,6 +73,7 @@
       transform: translateX(-50%);
       gap: 20px;
       z-index: 10;
+      display: flex;
     }
 
     .bridge-controls button {
@@ -100,19 +107,22 @@
 </head>
 <body>
 
-  <!-- Red Light Green Light -->
-  <a href="https://eddiehi57.github.io/red-light-green-light/" target="_blank" class="thumbnail-link" id="thumb1">
-    <img src="redlightthumb.jpg" alt="Red Light Green Light" />
-  </a>
+  <!-- Thumbnails Centered -->
+  <div class="thumbnail-container" id="thumbnailContainer">
+    <!-- Red Light Green Light -->
+    <a href="https://eddiehi57.github.io/red-light-green-light/" target="_blank" class="thumbnail-link" id="thumb1">
+      <img src="redlightthumb.jpg" alt="Red Light Green Light" />
+    </a>
 
-  <!-- Mingle Game -->
-  <a href="https://eddiehi57.github.io/minglegame/" target="_blank" class="thumbnail-link" id="thumb2">
-    <img src="minglethumb.jpg" alt="Mingle Game" />
-  </a>
+    <!-- Mingle Game -->
+    <a href="https://eddiehi57.github.io/minglegame/" target="_blank" class="thumbnail-link" id="thumb2">
+      <img src="minglethumb.jpg" alt="Mingle Game" />
+    </a>
 
-  <!-- Bridge Button -->
-  <div class="thumbnail-link" id="bridgeBtn" onclick="enterBridgeMode()">
-    <img src="bridgepage.jpg" alt="Bridge Game" />
+    <!-- Bridge Button -->
+    <div class="thumbnail-link" id="bridgeBtn" onclick="enterBridgeMode()">
+      <img src="bridgepage.jpg" alt="Bridge Game" />
+    </div>
   </div>
 
   <!-- Bridge Controls -->
@@ -151,18 +161,14 @@
 
     function enterBridgeMode() {
       document.body.style.backgroundImage = "url('bridgepage.jpg')";
-      document.getElementById('thumb1').style.display = 'none';
-      document.getElementById('thumb2').style.display = 'none';
-      document.getElementById('bridgeBtn').style.display = 'none';
+      document.getElementById('thumbnailContainer').style.display = 'none';
       document.getElementById('bridgeControls').style.display = 'flex';
       document.getElementById('step-message').style.display = 'none';
     }
 
     function exitBridgeMode() {
       document.body.style.backgroundImage = "url('tdmainpage.jpg')";
-      document.getElementById('thumb1').style.display = 'block';
-      document.getElementById('thumb2').style.display = 'block';
-      document.getElementById('bridgeBtn').style.display = 'block';
+      document.getElementById('thumbnailContainer').style.display = 'flex';
       document.getElementById('bridgeControls').style.display = 'none';
       document.getElementById('step-message').style.display = 'none';
     }
@@ -178,10 +184,6 @@
       }, 2000);
     }
   </script>
-
-</body>
-</html>
-
 
 </body>
 </html>
