@@ -3,118 +3,64 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Landing Page</title>
+  <title>Bridge Page</title>
   <style>
     html, body {
       margin: 0;
       padding: 0;
       height: 100%;
-      font-family: Arial, sans-serif;
-    }
-
-    body {
-      background: url('tdmainpage.jpg') no-repeat center center fixed;
+      background: url('bridgepage.jpg') no-repeat center center fixed;
       background-size: cover;
-      position: relative;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
     }
 
-    .thumbnail-link {
-      position: absolute;
-      width: 220px;
-      height: 140px;
-      border: 3px solid #fff;
-      border-radius: 10px;
-      overflow: hidden;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-      transition: transform 0.3s;
+    .controls {
+      margin-bottom: 40px;
+      display: flex;
+      gap: 20px;
     }
 
-    .thumbnail-link:hover {
-      transform: scale(1.05);
-    }
-
-    .thumbnail-link img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-
-    /* Evenly spaced at bottom */
-    #thumb1 {
-      bottom: 20px;
-      left: 20%;
-    }
-
-    #thumb2 {
-      bottom: 20px;
-      left: 60%;
-    }
-
-    .sound-toggle {
-      position: absolute;
-      bottom: 20px;
-      left: 20px;
-      background-color: rgba(0, 0, 0, 0.6);
-      color: white;
+    button {
+      padding: 14px 24px;
+      font-size: 18px;
       border: none;
-      padding: 10px 16px;
-      border-radius: 20px;
+      border-radius: 10px;
       cursor: pointer;
-      font-size: 16px;
-      z-index: 20;
+      background-color: rgba(0, 0, 0, 0.7);
+      color: white;
+      transition: background-color 0.3s;
     }
 
-    @media (max-width: 600px) {
-      .thumbnail-link {
-        width: 45%;
-        height: auto;
-      }
-
-      #thumb1 {
-        left: 5%;
-        bottom: 100px;
-      }
-
-      #thumb2 {
-        left: 50%;
-        bottom: 100px;
-      }
+    button:hover {
+      background-color: rgba(255, 255, 255, 0.8);
+      color: black;
     }
   </style>
 </head>
 <body>
 
-  <!-- Red Light Green Light Thumbnail -->
-  <a href="https://eddiehi57.github.io/red-light-green-light/" target="_blank" class="thumbnail-link" id="thumb1">
-    <img src="redlightthumb.jpg" alt="Red Light Green Light" />
-  </a>
+  <div class="controls">
+    <button onclick="playStep()">STEP</button>
+    <button onclick="goHome()">MAIN PAGE</button>
+  </div>
 
-  <!-- Mingle Game Thumbnail -->
-  <a href="https://eddiehi57.github.io/minglegame/" target="_blank" class="thumbnail-link" id="thumb2">
-    <img src="minglethumb.jpg" alt="Mingle Game" />
-  </a>
-
-  <!-- Sound Toggle Button -->
-  <button class="sound-toggle" onclick="toggleSound()">🔊 Music</button>
-
-  <!-- Background Music -->
-  <audio id="background-audio" loop>
-    <source src="bckgroundmusic.mp3" type="audio/mpeg" />
+  <audio id="step-audio">
+    <source src="stepsound.mp3" type="audio/mpeg" />
     Your browser does not support the audio element.
   </audio>
 
   <script>
-    const audio = document.getElementById('background-audio');
-    let isPlaying = false;
+    function playStep() {
+      const stepAudio = document.getElementById('step-audio');
+      stepAudio.currentTime = 0;
+      stepAudio.play();
+    }
 
-    function toggleSound() {
-      if (isPlaying) {
-        audio.pause();
-      } else {
-        audio.play();
-      }
-      isPlaying = !isPlaying;
+    function goHome() {
+      window.location.href = "index.html";
     }
   </script>
 
