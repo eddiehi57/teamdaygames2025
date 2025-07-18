@@ -3,28 +3,74 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Bridge Page</title>
+  <title>Squid Game Landing</title>
   <style>
     html, body {
       margin: 0;
       padding: 0;
       height: 100%;
-      background: url('bridgepage.jpg') no-repeat center center fixed;
-      background-size: cover;
       font-family: Arial, sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: flex-end;
+      overflow: hidden;
     }
 
-    .controls {
-      margin-bottom: 40px;
-      display: flex;
+    body {
+      background: url('tdmainpage.jpg') no-repeat center center fixed;
+      background-size: cover;
+      position: relative;
+    }
+
+    .thumbnail-link {
+      position: absolute;
+      width: 220px;
+      height: 140px;
+      border: 3px solid #fff;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      transition: transform 0.3s;
+    }
+
+    .thumbnail-link:hover {
+      transform: scale(1.05);
+    }
+
+    .thumbnail-link img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    #thumb1 { bottom: 20px; left: 20%; }
+    #thumb2 { bottom: 20px; left: 60%; }
+    #bridgeBtn { bottom: 20px; left: 2%; }
+
+    .sound-toggle {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      background-color: rgba(0, 0, 0, 0.6);
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 16px;
+      z-index: 10;
+    }
+
+    .bridge-controls {
+      display: none;
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
       gap: 20px;
+      z-index: 10;
     }
 
-    button {
-      padding: 14px 24px;
+    .bridge-controls button {
+      padding: 12px 24px;
       font-size: 18px;
       border: none;
       border-radius: 10px;
@@ -34,35 +80,108 @@
       transition: background-color 0.3s;
     }
 
-    button:hover {
-      background-color: rgba(255, 255, 255, 0.8);
+    .bridge-controls button:hover {
+      background-color: rgba(255, 255, 255, 0.9);
       color: black;
+    }
+
+    #step-message {
+      display: none;
+      position: absolute;
+      top: 40%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 60px;
+      font-weight: bold;
+      color: hotpink;
+      z-index: 10;
     }
   </style>
 </head>
 <body>
 
-  <div class="controls">
-    <button onclick="playStep()">STEP</button>
-    <button onclick="goHome()">MAIN PAGE</button>
+  <!-- Red Light Green Light -->
+  <a href="https://eddiehi57.github.io/red-light-green-light/" target="_blank" class="thumbnail-link" id="thumb1">
+    <img src="redlightthumb.jpg" alt="Red Light Green Light" />
+  </a>
+
+  <!-- Mingle Game -->
+  <a href="https://eddiehi57.github.io/minglegame/" target="_blank" class="thumbnail-link" id="thumb2">
+    <img src="minglethumb.jpg" alt="Mingle Game" />
+  </a>
+
+  <!-- Bridge Button -->
+  <div class="thumbnail-link" id="bridgeBtn" onclick="enterBridgeMode()">
+    <img src="bridgepage.jpg" alt="Bridge Game" />
   </div>
+
+  <!-- Bridge Controls -->
+  <div class="bridge-controls" id="bridgeControls">
+    <button onclick="playStep()">STEP</button>
+    <button onclick="exitBridgeMode()">MAIN PAGE</button>
+  </div>
+
+  <!-- Step Message -->
+  <div id="step-message">STEP A or B</div>
+
+  <!-- Music Button -->
+  <button class="sound-toggle" onclick="toggleSound()">🔊 Music</button>
+
+  <!-- Audio Files -->
+  <audio id="background-audio" loop>
+    <source src="bckgroundmusic.mp3" type="audio/mpeg" />
+  </audio>
 
   <audio id="step-audio">
     <source src="stepsound.mp3" type="audio/mpeg" />
-    Your browser does not support the audio element.
   </audio>
 
   <script>
-    function playStep() {
-      const stepAudio = document.getElementById('step-audio');
-      stepAudio.currentTime = 0;
-      stepAudio.play();
+    let isPlaying = false;
+
+    function toggleSound() {
+      const audio = document.getElementById('background-audio');
+      if (isPlaying) {
+        audio.pause();
+      } else {
+        audio.play();
+      }
+      isPlaying = !isPlaying;
     }
 
-    function goHome() {
-      window.location.href = "index.html";
+    function enterBridgeMode() {
+      document.body.style.backgroundImage = "url('bridgepage.jpg')";
+      document.getElementById('thumb1').style.display = 'none';
+      document.getElementById('thumb2').style.display = 'none';
+      document.getElementById('bridgeBtn').style.display = 'none';
+      document.getElementById('bridgeControls').style.display = 'flex';
+      document.getElementById('step-message').style.display = 'none';
+    }
+
+    function exitBridgeMode() {
+      document.body.style.backgroundImage = "url('tdmainpage.jpg')";
+      document.getElementById('thumb1').style.display = 'block';
+      document.getElementById('thumb2').style.display = 'block';
+      document.getElementById('bridgeBtn').style.display = 'block';
+      document.getElementById('bridgeControls').style.display = 'none';
+      document.getElementById('step-message').style.display = 'none';
+    }
+
+    function playStep() {
+      const stepAudio = document.getElementById('step-audio');
+      const msg = document.getElementById('step-message');
+      stepAudio.currentTime = 0;
+      stepAudio.play();
+      msg.style.display = 'block';
+      setTimeout(() => {
+        msg.style.display = 'none';
+      }, 2000);
     }
   </script>
+
+</body>
+</html>
+
 
 </body>
 </html>
