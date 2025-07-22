@@ -1,410 +1,227 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Team Day Majority Rules</title>
-<style>
-  html, body {
-    margin: 0; padding: 0; height: 100%;
-    background-color: #000;
-    color: #fff;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    overflow: hidden; /* prevent scroll */
-  }
-  body {
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-  }
-  main {
-    flex-grow: 1;
-    padding: 20px 40px;
-    max-width: 900px;
-    margin: auto;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    box-sizing: border-box;
-    height: calc(100vh - 80px);
-  }
-  h1, h2 {
-    color: #0ff;
-    text-align: center;
-    margin: 0 0 8px 0;
-    line-height: 1.2;
-  }
-  h2 {
-    font-size: 28px;
-  }
-  .content {
-    margin: 15px 0 30px 0;
-    font-size: 18px;
-    line-height: 1.3;
-    white-space: pre-line;
-    text-align: center;
-    max-width: 700px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-  .instructions {
-    font-weight: bold;
-    color: #ff49a2; /* bright pink */
-    margin-bottom: 12px;
-  }
-  .left-align {
-    text-align: left;
-    max-width: 700px;
-    margin: 0 auto 20px auto;
-    font-size: 16px;
-    line-height: 1.4;
-    white-space: pre-line;
-  }
-  .risk-text {
-    text-align: left;
-    max-width: 700px;
-    margin: 0 auto 30px auto;
-    font-size: 14px;
-    line-height: 1.3;
-    font-style: italic;
-    color: #ccc;
-    white-space: pre-line;
-  }
-  button {
-    background-color: #0ff;
-    border: none;
-    color: #000;
-    font-weight: 700;
-    padding: 10px 22px;
-    margin: 0 10px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 16px;
-    user-select: none;
-    min-width: 120px;
-    max-width: 160px;
-    transition: background-color 0.3s ease;
-  }
-  button:hover:not(:disabled) {
-    background-color: #0cc;
-  }
-  button:disabled {
-    background-color: #055;
-    cursor: not-allowed;
-  }
-  .nav-buttons {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-  }
-  .team-selector {
-    margin-top: 30px;
-    font-size: 56px;
-    font-weight: 900;
-    letter-spacing: 0.15em;
-    user-select: none;
-    height: auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: #ff0;
-    text-shadow: 0 0 8px #ff0;
-    visibility: hidden; /* Hidden initially */
-    min-height: 70px;
-  }
-  .footer {
-    text-align: center;
-    padding: 5px 0 10px 0;
-    font-size: 14px;
-    color: #555;
-  }
-  #end-game-btn {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background-color: #ff0066;
-    color: #fff;
-    font-weight: 700;
-    padding: 12px 24px;
-    border-radius: 8px;
-    border: none;
-    cursor: pointer;
-    font-size: 16px;
-    text-decoration: none;
-    user-select: none;
-    box-shadow: 0 0 10px #ff0066aa;
-    transition: background-color 0.3s ease;
-  }
-  #end-game-btn:hover {
-    background-color: #cc0055;
-  }
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Team Day Majority Rules</title>
+  <style>
+    body {
+      margin: 0;
+      background-color: black;
+      color: white;
+      font-family: 'Segoe UI', sans-serif;
+      overflow: hidden;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      height: 100vh;
+      padding: 20px;
+      box-sizing: border-box;
+      text-align: center;
+    }
+
+    .question-header {
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+      color: lightgray;
+    }
+
+    .slide-content {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      max-width: 90%;
+      width: 100%;
+    }
+
+    .round-title {
+      font-size: 2rem;
+      color: #00ff00;
+      margin-bottom: 5px;
+    }
+
+    .question-text {
+      font-size: 1.8rem;
+      margin-bottom: 15px;
+    }
+
+    .wait-text {
+      font-weight: bold;
+      color: hotpink;
+      margin-bottom: 20px;
+    }
+
+    .rules {
+      text-align: left;
+      font-size: 1rem;
+      margin-left: 5%;
+      margin-right: 5%;
+      line-height: 1.5;
+    }
+
+    .bonus-header {
+      font-size: 1.4rem;
+      font-weight: bold;
+      margin-top: 25px;
+      margin-bottom: 10px;
+    }
+
+    .bonus-desc {
+      font-size: 1.3rem;
+      font-weight: bold;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      margin-top: 20px;
+    }
+
+    .nav-button, .end-button {
+      background-color: #222;
+      border: 2px solid white;
+      color: white;
+      padding: 10px 20px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .nav-button:hover, .end-button:hover {
+      background-color: #444;
+    }
+
+    .eightball {
+      background-color: #000;
+      color: white;
+      border: 2px solid white;
+      border-radius: 50%;
+      width: 100px;
+      height: 100px;
+      font-size: 1.5rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      margin: 0 auto 20px;
+    }
+
+    .random-result {
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: yellow;
+      text-shadow: 1px 1px 2px black;
+      -webkit-text-stroke: 1px white;
+      margin-top: 10px;
+    }
+
+    .end-button {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+    }
+  </style>
 </head>
 <body>
-<main>
-  <h1>Team Day Majority Rules</h1>
-  <h2>YES or NO: Majority Rules! 👥 8 Teams | 🎟️ Token-Based | ✅ Majority Safe | ❌ Minority Loses</h2>
-
-  <div id="slide-container" class="content"></div>
-
-  <div class="team-selector" id="team-selector">TEAM 1</div>
-
-  <div class="nav-buttons">
-    <button id="back-btn" disabled>⬅️ Back</button>
-    <button id="random-team-btn">🎱 Pick Random Team</button>
-    <button id="next-btn">Next ➡️</button>
+  <div class="container" id="mainContainer">
+    <div class="question-header" id="introText">
+      YES or NO: Majority Rules! 👥 8 Teams | 🎟️ Token-Based | ✅ Majority Safe | ❌ Minority Loses
+    </div>
+    <div class="slide-content">
+      <div class="round-title" id="roundTitle">🟢 Round 1 Question</div>
+      <div class="question-text" id="questionText">📱 Are Samsung phones better than Apple phones?</div>
+      <div class="wait-text"><strong>(Wait until you are prompted to hold up your sign!)</strong></div>
+      <div class="rules" id="rulesText">
+        🟩 Majority: (5 or more teams) → SAFE ✅<br>
+        🟥 Minority: (3 or less teams) → LOSE 1 Token ❌<br>
+        🤝 Draw (4 vs 4) = Everyone SAFE<br>
+        <div class="bonus-header">BONUS BET: Take a Risk or Play It Safe?</div>
+        <div class="bonus-desc">(If Risk: A random team wins +1 token AND a random team loses 1 token)</div>
+      </div>
+      <div class="eightball" onclick="showRandomTeam()">🎱</div>
+      <div id="randomTeam" class="random-result" style="display: none;"></div>
+    </div>
+    <div class="buttons">
+      <button class="nav-button" onclick="prevSlide()">Previous</button>
+      <button class="nav-button" onclick="nextSlide()">Next</button>
+      <button class="nav-button" onclick="goToFinal()">Final Round</button>
+    </div>
+    <a class="end-button" href="https://docs.google.com/presentation/d/1MCtjyIHIbhxjUiumJ57t1W2Ky6_VcrIzFPXeJp3zfFY/present?slide=id.g257a2e89d4a_0_136" target="_blank">END GAME</a>
   </div>
-  <div class="nav-buttons" style="margin-top:10px;">
-    <button id="jump-final-btn">Jump to Final Round 🏁</button>
-  </div>
-</main>
 
-<a href="https://docs.google.com/presentation/d/1MCtjyIHIbhxjUiumJ57t1W2Ky6_VcrIzFPXeJp3zfFY/present?slide=id.g257a2e89d4a_0_136" target="_blank" id="end-game-btn" rel="noopener noreferrer">END GAME</a>
+  <script>
+    const slides = [
+      "📱 Are Samsung phones better than Apple phones?",
+      "🍍 Is pineapple on pizza okay?",
+      "👽 Do aliens exist?",
+      "📱⚖️Is social media more harmful than helpful?",
+      "⏳ Would you time travel to the past if you couldn’t return?",
+      "🏠 Is working from home better than in-office?",
+      "✈️ Is it okay to recline your airplane seat?",
+      "🪂 Would you go skydiving if someone paid?",
+      "🚿Should you shower at night instead of the morning?",
+      "🏖️📅Would you give up vacations for the next 5 years to retire 10 years early?",
+      "🐶 Are dogs better than cats?"
+    ];
 
-<div class="footer">
-  Made for Team Building | Powered by ChatGPT
-</div>
+    let currentSlide = 0;
 
-<script>
-  const slides = [
-    {
-      type: "rules",
-      title: "How to Play",
-      content: `Each round: YES or NO vote
+    function updateSlide() {
+      const question = slides[currentSlide];
+      document.getElementById("roundTitle").innerText = `🟢 ${currentSlide === 10 ? "FINAL ROUND Question" : "Round " + (currentSlide + 1) + " Question"}`;
+      document.getElementById("questionText").innerText = question;
+      document.getElementById("randomTeam").style.display = "none";
 
-Majority = SAFE ✅
-
-Minority = LOSE 1 Token ❌
-
-Draw (4 vs 4) = Everyone SAFE 🤝
-
-Bonus Bet (Majority only):
-Play It Safe 😇 = No change
-
-Take a Risk 🎰 = Random team +1 token, another -1 token
-
-Note: FINAL ROUND IS DIFFERENT`
-    },
-    {
-      type: "round",
-      round: 1,
-      question: "📱 Are Samsung phones better than Apple phones?",
-      extra: {
-        waitText: "(Wait until you are prompted to hold up your sign!)",
-        leftText: `✅ YES ❌ NO
-🟩 Majority: (5 or more teams) → SAFE ✅
-🟥 Minority: (3 or less teams) → LOSE 1 Token ❌
-🤝 Draw (4 vs 4) = Everyone SAFE`,
-        riskText: `(If Risk: A random team wins +1 token AND a random team loses 1 token)`
-      }
-    },
-    {
-      type: "round",
-      round: 2,
-      question: "🍍 Is pineapple on pizza okay?",
-      extra: {
-        waitText: "(Wait until you are prompted to hold up your sign!)",
-        leftText: `✅ YES ❌ NO
-🟩 Majority: (5 or more teams) → SAFE ✅
-🟥 Minority: (3 or less teams) → LOSE 1 Token ❌
-🤝 Draw (4 vs 4) = Everyone SAFE`,
-        riskText: `(If Risk: A random team wins +1 token AND a random team loses 1 token)`
-      }
-    },
-    {
-      type: "round",
-      round: 3,
-      question: "👽 Do aliens exist?",
-      extra: {
-        waitText: "(Wait until you are prompted to hold up your sign!)",
-        leftText: `✅ YES ❌ NO
-🟩 Majority: (5 or more teams) → SAFE ✅
-🟥 Minority: (3 or less teams) → LOSE 1 Token ❌
-🤝 Draw (4 vs 4) = Everyone SAFE`,
-        riskText: `(If Risk: A random team wins +1 token AND a random team loses 1 token)`
-      }
-    },
-    {
-      type: "round",
-      round: 4,
-      question: "📱⚖️Is social media more harmful than helpful?",
-      extra: {
-        waitText: "(Wait until you are prompted to hold up your sign!)",
-        leftText: `✅ YES ❌ NO
-🟩 Majority: (5 or more teams) → SAFE ✅
-🟥 Minority: (3 or less teams) → LOSE 1 Token ❌
-🤝 Draw (4 vs 4) = Everyone SAFE`,
-        riskText: `(If Risk: A random team wins +1 token AND a random team loses 1 token)`
-      }
-    },
-    {
-      type: "round",
-      round: 5,
-      question: "⏳ Would you time travel to the past if you couldn’t return?",
-      extra: {
-        waitText: "(Wait until you are prompted to hold up your sign!)",
-        leftText: `✅ YES ❌ NO
-🟩 Majority: (5 or more teams) → SAFE ✅
-🟥 Minority: (3 or less teams) → LOSE 1 Token ❌
-🤝 Draw (4 vs 4) = Everyone SAFE`,
-        riskText: `(If Risk: A random team wins +1 token AND a random team loses 1 token)`
-      }
-    },
-    {
-      type: "round",
-      round: 6,
-      question: "🏠 Is working from home better than in-office?",
-      extra: {
-        waitText: "(Wait until you are prompted to hold up your sign!)",
-        leftText: `✅ YES ❌ NO
-🟩 Majority: (5 or more teams) → SAFE ✅
-🟥 Minority: (3 or less teams) → LOSE 1 Token ❌
-🤝 Draw (4 vs 4) = Everyone SAFE`,
-        riskText: `(If Risk: A random team wins +1 token AND a random team loses 1 token)`
-      }
-    },
-    {
-      type: "round",
-      round: 7,
-      question: "✈️ Is it okay to recline your airplane seat?",
-      extra: {
-        waitText: "(Wait until you are prompted to hold up your sign!)",
-        leftText: `✅ YES ❌ NO
-🟩 Majority: (5 or more teams) → SAFE ✅
-🟥 Minority: (3 or less teams) → LOSE 1 Token ❌
-🤝 Draw (4 vs 4) = Everyone SAFE`,
-        riskText: `(If Risk: A random team wins +1 token AND a random team loses 1 token)`
-      }
-    },
-    {
-      type: "round",
-      round: 8,
-      question: "🪂 Would you go skydiving if someone paid?",
-      extra: {
-        waitText: "(Wait until you are prompted to hold up your sign!)",
-        leftText: `✅ YES ❌ NO
-🟩 Majority: (5 or more teams) → SAFE ✅
-🟥 Minority: (3 or less teams) → LOSE 1 Token ❌
-🤝 Draw (4 vs 4) = Everyone SAFE`,
-        riskText: `(If Risk: A random team wins +1 token AND a random team loses 1 token)`
-      }
-    },
-    {
-      type: "round",
-      round: 9,
-      question: "🚿Should you shower at night instead of the morning?",
-      extra: {
-        waitText: "(Wait until you are prompted to hold up your sign!)",
-        leftText: `✅ YES ❌ NO
-🟩 Majority: (5 or more teams) → SAFE ✅
-🟥 Minority: (3 or less teams) → LOSE 1 Token ❌
-🤝 Draw (4 vs 4) = Everyone SAFE`,
-        riskText: `(If Risk: A random team wins +1 token AND a random team loses 1 token)`
-      }
-    },
-    {
-      type: "round",
-      round: 10,
-      question: "🏖️📅Would you give up vacations for the next 5 years to retire 10 years early?",
-      extra: {
-        waitText: "(Wait until you are prompted to hold up your sign!)",
-        leftText: `✅ YES ❌ NO
-🟩 Majority: (5 or more teams) → SAFE ✅
-🟥 Minority: (3 or less teams) → LOSE 1 Token ❌
-🤝 Draw (4 vs 4) = Everyone SAFE`,
-        riskText: `(If Risk: A random team wins +1 token AND a random team loses 1 token)`
-      }
-    },
-    {
-      type: "final",
-      round: "FINAL",
-      question: "🐶 Are dogs better than cats?",
-      extra: {
-        waitText: "(Wait until you are prompted to hold up your sign!)",
-        leftText: `✅ YES ❌ NO  or  🐱Scardey Cat
-🟩 Majority: (5 or more teams) → WIN 5 TOKENS! ✅
-🟥 Minority: (3 or less teams) → LOSE 5 TOKENS! ❌
-🤝 Draw (4 vs 4) → ALL LOSE 5 TOKENS! ❌`,
-        riskText: ""
+      if (currentSlide === 10) {
+        document.getElementById("rulesText").innerHTML = `
+          🟩 Majority: (5 or more teams) → WIN 5 TOKENS! ✅<br>
+          🟥 Minority: (3 or less teams) → LOSE 5 TOKENS! ❌<br>
+          🤝 Draw (4 vs 4) → ALL LOSE 5 TOKENS! ❌
+        `;
+      } else {
+        document.getElementById("rulesText").innerHTML = `
+          🟩 Majority: (5 or more teams) → SAFE ✅<br>
+          🟥 Minority: (3 or less teams) → LOSE 1 Token ❌<br>
+          🤝 Draw (4 vs 4) = Everyone SAFE<br>
+          <div class="bonus-header">BONUS BET: Take a Risk or Play It Safe?</div>
+          <div class="bonus-desc">(If Risk: A random team wins +1 token AND a random team loses 1 token)</div>
+        `;
       }
     }
-  ];
 
-  let currentIndex = 0;
-  const slideContainer = document.getElementById("slide-container");
-  const backBtn = document.getElementById("back-btn");
-  const nextBtn = document.getElementById("next-btn");
-  const randomTeamBtn = document.getElementById("random-team-btn");
-  const jumpFinalBtn = document.getElementById("jump-final-btn");
-  const teamSelector = document.getElementById("team-selector");
-
-  let animationInterval = null;
-  let animationCount = 0;
-  const maxAnimationCycles = 30;
-
-  function renderSlide(index) {
-    currentIndex = index;
-    const slide = slides[index];
-    backBtn.disabled = index === 0;
-    nextBtn.disabled = index === slides.length - 1;
-
-    if (slide.type === "rules") {
-      slideContainer.innerHTML = `<h2>${slide.title}</h2><p style="white-space: pre-line; font-size: 18px; max-width: 700px; margin: 15px auto 30px auto;">${slide.content}</p>`;
-      teamSelector.style.visibility = "hidden";
-      randomTeamBtn.disabled = true;
-    } else if (slide.type === "round" || slide.type === "final") {
-      const roundLabel = slide.type === "final" ? "FINAL ROUND Question" : `Round ${slide.round} Question`;
-      const waitHtml = `<div class="instructions">${slide.extra.waitText}</div>`;
-      const leftTextHtml = `<div class="left-align">${slide.extra.leftText}</div>`;
-      const riskHtml = slide.extra.riskText ? `<div class="risk-text">${slide.extra.riskText}</div>` : "";
-
-      slideContainer.innerHTML = `
-        <h2>${roundLabel}</h2>
-        <p style="font-size:28px; margin-top: 0; margin-bottom: 15px; max-width: 700px; margin-left: auto; margin-right: auto;">${slide.question}</p>
-        ${waitHtml}
-        ${leftTextHtml}
-        ${riskHtml}
-      `;
-      teamSelector.style.visibility = "hidden";
-      randomTeamBtn.disabled = false;
-    }
-    teamSelector.textContent = "";
-  }
-
-  function animateRandomTeam() {
-    if(animationInterval) return; 
-    animationCount = 0;
-    teamSelector.style.visibility = "hidden";
-    animationInterval = setInterval(() => {
-      animationCount++;
-      const teamNum = (animationCount % 8) + 1;
-      teamSelector.textContent = `TEAM ${teamNum}`;
-      if(animationCount >= maxAnimationCycles) {
-        clearInterval(animationInterval);
-        animationInterval = null;
-        const finalTeam = Math.floor(Math.random() * 8) + 1;
-        teamSelector.textContent = `TEAM ${finalTeam}`;
-        teamSelector.style.visibility = "visible";
+    function nextSlide() {
+      if (currentSlide < slides.length - 1) {
+        currentSlide++;
+        updateSlide();
       }
-    }, 80);
-  }
+    }
 
-  backBtn.addEventListener("click", () => {
-    if (currentIndex > 0) renderSlide(currentIndex - 1);
-  });
+    function prevSlide() {
+      if (currentSlide > 0) {
+        currentSlide--;
+        updateSlide();
+      }
+    }
 
-  nextBtn.addEventListener("click", () => {
-    if (currentIndex < slides.length - 1) renderSlide(currentIndex + 1);
-  });
+    function goToFinal() {
+      currentSlide = 10;
+      updateSlide();
+    }
 
-  randomTeamBtn.addEventListener("click", animateRandomTeam);
+    function showRandomTeam() {
+      const teamNum = Math.floor(Math.random() * 8) + 1;
+      const teamDisplay = document.getElementById("randomTeam");
+      teamDisplay.innerText = `TEAM ${teamNum}`;
+      teamDisplay.style.display = "block";
+    }
 
-  jumpFinalBtn.addEventListener("click", () => {
-    const finalIndex = slides.findIndex(s => s.type === "final");
-    if(finalIndex >= 0) renderSlide(finalIndex);
-  });
-
-  renderSlide(0);
-</script>
+    updateSlide();
+  </script>
 </body>
 </html>
