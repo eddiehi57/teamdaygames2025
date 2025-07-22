@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>YES or NO: Majority Rules!</title>
+<title>Team Day Majority Rules</title>
 <style>
   body {
     background-color: #000;
@@ -28,6 +28,7 @@
     margin: 30px 0;
     font-size: 1.3rem;
     line-height: 1.6;
+    white-space: pre-line;
     text-align: center;
   }
   button {
@@ -43,25 +44,32 @@
     user-select: none;
     transition: background-color 0.3s ease;
   }
-  button:hover {
+  button:hover:not(:disabled) {
     background-color: #0cc;
+  }
+  button:disabled {
+    background-color: #055;
+    cursor: not-allowed;
   }
   .nav-buttons {
     display: flex;
     justify-content: center;
     margin-top: 20px;
+    flex-wrap: wrap;
   }
   .team-selector {
     margin-top: 30px;
-    font-size: 2rem;
+    font-size: 2.5rem;
     font-weight: 900;
     letter-spacing: 0.15em;
     user-select: none;
-    height: 60px;
+    height: 70px;
     display: flex;
     justify-content: center;
     align-items: center;
     color: #ff0;
+    text-shadow: 0 0 8px #ff0;
+    visibility: hidden; /* Hidden initially */
   }
   .footer {
     text-align: center;
@@ -69,11 +77,17 @@
     font-size: 0.9rem;
     color: #555;
   }
+  ul {
+    text-align: left;
+    max-width: 700px;
+    margin: 10px auto 30px auto;
+  }
 </style>
 </head>
 <body>
 <main>
-  <h1>YES or NO: Majority Rules! 🎲</h1>
+  <h1>Team Day Majority Rules</h1>
+  <h2>YES or NO: Majority Rules! 👥 8 Teams | 🎟️ Token-Based | ✅ Majority Safe | ❌ Minority Loses</h2>
 
   <div id="slide-container" class="content"></div>
 
@@ -94,84 +108,175 @@
 </div>
 
 <script>
+  // Slides data matching your detailed content and rules
   const slides = [
     {
       type: "rules",
       title: "How to Play",
-      content: `
-      <p>🎯 <strong>Objective:</strong> Stay in the <em>majority</em> by answering YES or NO to each question!</p>
-      <ul style="text-align:left; max-width:600px; margin: auto;">
-        <li>✅ <strong>Majority answer:</strong> Teams in the majority are <strong>SAFE</strong></li>
-        <li>❌ <strong>Minority answer:</strong> Teams in the minority <strong>LOSE 1 TOKEN</strong></li>
-        <li>🤝 If there is a draw (equal YES & NO), everyone is SAFE that round</li>
-        <li>🎰 <strong>Bonus Bet:</strong> Majority teams can choose to <em>Play it Safe</em> or <em>Take a Risk</em> where one random team wins an extra token and another loses one</li>
-        <li>🏁 <strong>Final Round:</strong> Teams can risk 5 tokens for a big win or loss</li>
-      </ul>
-      <p>Use the buttons below to navigate through rounds. Have fun!</p>`
+      content: `Each round: YES or NO vote
+
+Majority = SAFE ✅
+
+Minority = LOSE 1 Token ❌
+
+Draw (4 vs 4) = Everyone SAFE 🤝
+
+Bonus Bet (Majority only):
+Play It Safe 😇 = No change
+
+Take a Risk 🎰 = Random team +1 token, another -1 token
+
+Note: FINAL ROUND IS DIFFERENT`
     },
     {
-      type: "question",
+      type: "round",
       round: 1,
-      question: "Are dogs better than cats? 🐶",
+      question: "📱 Are Samsung phones better than Apple phones?",
+      extra: `✅ YES ❌ NO
+(Wait until you are prompted to hold up your sign!)
+🟩 Majority: (5 or more teams) → SAFE ✅
+🟥 Minority: (3 or less teams) → LOSE 1 Token ❌
+🤝 Draw (4 vs 4) = Everyone SAFE
+After Vote:
+🎰 Bonus Bet Time (Majority Teams Vote):
+ ✋ Choose: Play It Safe or Take a Risk
+ (If Risk: A random team wins +1 token AND a random team loses 1 token)`
     },
     {
-      type: "question",
+      type: "round",
       round: 2,
-      question: "Are Samsung phones better than Apple phones? 📱",
+      question: "🍍 Is pineapple on pizza okay?",
+      extra: `✅ YES ❌ NO
+(Wait until you are prompted to hold up your sign!)
+🟩 Majority: (5 or more teams) → SAFE ✅
+🟥 Minority: (3 or less teams) → LOSE 1 Token ❌
+🤝 Draw (4 vs 4) = Everyone SAFE
+After Vote:
+🎰 Bonus Bet Time (Majority Teams Vote):
+ ✋ Choose: Play It Safe or Take a Risk
+ (If Risk: A random team wins +1 token AND a random team loses 1 token)`
     },
     {
-      type: "question",
+      type: "round",
       round: 3,
-      question: "Do aliens exist? 👽",
+      question: "👽 Do aliens exist?",
+      extra: `✅ YES ❌ NO
+(Wait until you are prompted to hold up your sign!)
+🟩 Majority: (5 or more teams) → SAFE ✅
+🟥 Minority: (3 or less teams) → LOSE 1 Token ❌
+🤝 Draw (4 vs 4) = Everyone SAFE
+After Vote:
+🎰 Bonus Bet Time (Majority Teams Vote):
+ ✋ Choose: Play It Safe or Take a Risk
+ (If Risk: A random team wins +1 token AND a random team loses 1 token)`
     },
     {
-      type: "question",
+      type: "round",
       round: 4,
-      question: "Would you rather fly than be invisible? 🦸‍♀️",
+      question: "📱⚖️Is social media more harmful than helpful?",
+      extra: `✅ YES ❌ NO
+(Wait until you are prompted to hold up your sign!)
+🟩 Majority: (5 or more teams) → SAFE ✅
+🟥 Minority: (3 or less teams) → LOSE 1 Token ❌
+🤝 Draw (4 vs 4) = Everyone SAFE
+After Vote:
+🎰 Bonus Bet Time (Majority Teams Vote):
+ ✋ Choose: Play It Safe or Take a Risk
+ (If Risk: A random team wins +1 token AND a random team loses 1 token)`
     },
     {
-      type: "question",
+      type: "round",
       round: 5,
-      question: "Is cereal a soup? 🥣",
+      question: "⏳ Would you time travel to the past if you couldn’t return?",
+      extra: `✅ YES ❌ NO
+(Wait until you are prompted to hold up your sign!)
+🟩 Majority: (5 or more teams) → SAFE ✅
+🟥 Minority: (3 or less teams) → LOSE 1 Token ❌
+🤝 Draw (4 vs 4) = Everyone SAFE
+After Vote:
+🎰 Bonus Bet Time (Majority Teams Vote):
+ ✋ Choose: Play It Safe or Take a Risk
+ (If Risk: A random team wins +1 token AND a random team loses 1 token)`
     },
     {
-      type: "question",
+      type: "round",
       round: 6,
-      question: "Is pineapple on pizza okay? 🍍",
+      question: "🏠 Is working from home better than in-office?",
+      extra: `✅ YES ❌ NO
+(Wait until you are prompted to hold up your sign!)
+🟩 Majority: (5 or more teams) → SAFE ✅
+🟥 Minority: (3 or less teams) → LOSE 1 Token ❌
+🤝 Draw (4 vs 4) = Everyone SAFE
+After Vote:
+🎰 Bonus Bet Time (Majority Teams Vote):
+ ✋ Choose: Play It Safe or Take a Risk
+ (If Risk: A random team wins +1 token AND a random team loses 1 token)`
     },
     {
-      type: "question",
+      type: "round",
       round: 7,
-      question: "Would you survive a zombie apocalypse? 🧟",
+      question: "✈️ Is it okay to recline your airplane seat?",
+      extra: `✅ YES ❌ NO
+(Wait until you are prompted to hold up your sign!)
+🟩 Majority: (5 or more teams) → SAFE ✅
+🟥 Minority: (3 or less teams) → LOSE 1 Token ❌
+🤝 Draw (4 vs 4) = Everyone SAFE
+After Vote:
+🎰 Bonus Bet Time (Majority Teams Vote):
+ ✋ Choose: Play It Safe or Take a Risk
+ (If Risk: A random team wins +1 token AND a random team loses 1 token)`
     },
     {
-      type: "question",
+      type: "round",
       round: 8,
-      question: "Would you eat a bug for $1,000? 🐛",
+      question: "🪂 Would you go skydiving if someone paid?",
+      extra: `✅ YES ❌ NO
+(Wait until you are prompted to hold up your sign!)
+🟩 Majority: (5 or more teams) → SAFE ✅
+🟥 Minority: (3 or less teams) → LOSE 1 Token ❌
+🤝 Draw (4 vs 4) = Everyone SAFE
+After Vote:
+🎰 Bonus Bet Time (Majority Teams Vote):
+ ✋ Choose: Play It Safe or Take a Risk
+ (If Risk: A random team wins +1 token AND a random team loses 1 token)`
     },
     {
-      type: "question",
+      type: "round",
       round: 9,
-      question: "Is a hot dog a sandwich? 🌭",
+      question: "🚿Should you shower at night instead of the morning?",
+      extra: `✅ YES ❌ NO
+(Wait until you are prompted to hold up your sign!)
+🟩 Majority: (5 or more teams) → SAFE ✅
+🟥 Minority: (3 or less teams) → LOSE 1 Token ❌
+🤝 Draw (4 vs 4) = Everyone SAFE
+After Vote:
+🎰 Bonus Bet Time (Majority Teams Vote):
+ ✋ Choose: Play It Safe or Take a Risk
+ (If Risk: A random team wins +1 token AND a random team loses 1 token)`
     },
     {
-      type: "question",
+      type: "round",
       round: 10,
-      question: "Would you time travel to the past if you couldn’t return? ⏳",
+      question: "🏖️📅Would you give up vacations for the next 5 years to retire 10 years early?",
+      extra: `✅ YES ❌ NO
+(Wait until you are prompted to hold up your sign!)
+🟩 Majority: (5 or more teams) → SAFE ✅
+🟥 Minority: (3 or less teams) → LOSE 1 Token ❌
+🤝 Draw (4 vs 4) = Everyone SAFE
+After Vote:
+🎰 Bonus Bet Time (Majority Teams Vote):
+ ✋ Choose: Play It Safe or Take a Risk
+ (If Risk: A random team wins +1 token AND a random team loses 1 token)`
     },
     {
       type: "final",
-      round: 11,
-      question: "Would you rather explore space than the deep ocean? 🌌",
-      finalRules: `
-      <p>🏁 <strong>Final Round Rules:</strong></p>
-      <ul style="text-align:left; max-width:600px; margin: auto;">
-        <li>Teams may <strong>risk 5 tokens</strong> for this final YES/NO vote</li>
-        <li>If you are in the majority, you <strong>gain 5 tokens</strong></li>
-        <li>If you are in the minority, you <strong>lose 5 tokens</strong></li>
-      </ul>
-      <p>Use this round to make your biggest strategic move!</p>
-      `
+      round: "FINAL",
+      question: "🐶 Are dogs better than cats?",
+      extra: `✅ YES ❌ NO  or  🐱Scardey Cat
+(Wait until you are prompted to hold up your sign!)
+🟩 Majority: (5 or more teams) → WIN 5 TOKENS! ✅
+🟥 Minority: (3 or less teams) → LOSE 5 TOKENS! ❌
+🤝 Draw (4 vs 4) → ALL LOSE 5 TOKENS! ❌`
     }
   ];
 
@@ -195,36 +300,29 @@
     nextBtn.disabled = index === slides.length - 1;
 
     if (slide.type === "rules") {
-      slideContainer.innerHTML = `<h2>${slide.title}</h2>${slide.content}`;
+      slideContainer.innerHTML = `<h2>${slide.title}</h2><p style="white-space: pre-line;">${slide.content}</p>`;
       teamSelector.style.visibility = "hidden";
       randomTeamBtn.disabled = true;
-    } else if (slide.type === "question") {
+    } else if (slide.type === "round" || slide.type === "final") {
+      const extraContent = slide.extra ? `<pre style="font-size:1.2rem; white-space: pre-line; max-width: 800px; margin: auto;">${slide.extra}</pre>` : '';
       slideContainer.innerHTML = `
-        <h2>🟢 Round ${slide.round}</h2>
-        <p style="font-size:1.8rem; margin: 20px 0;">🤔 ${slide.question}</p>
-        <p style="font-size:1.5rem; margin-top:40px;">✅ YES or ❌ NO</p>
+        <h2>${slide.type === "final" ? "🟢 FINAL ROUND" : "🟢 Round " + slide.round}</h2>
+        <p style="font-size:1.8rem; margin: 20px 0;">${slide.question}</p>
+        ${extraContent}
       `;
-      teamSelector.style.visibility = "visible";
-      randomTeamBtn.disabled = false;
-    } else if (slide.type === "final") {
-      slideContainer.innerHTML = `
-        <h2>🏁 Final Round</h2>
-        <p style="font-size:1.8rem; margin: 20px 0;">🤔 ${slide.question}</p>
-        <div style="margin-top:30px; font-size:1.3rem;">${slide.finalRules}</div>
-        <p style="font-size:1.5rem; margin-top:40px;">✅ YES or ❌ NO</p>
-      `;
-      teamSelector.style.visibility = "visible";
+      teamSelector.style.visibility = "hidden"; // hide team initially on question slides
       randomTeamBtn.disabled = false;
     }
-    teamSelector.textContent = "TEAM 1";
+    teamSelector.textContent = ""; // clear text until random team chosen
   }
 
   function animateRandomTeam() {
     if(animationInterval) return; // Prevent multiple clicks
     animationCount = 0;
+    teamSelector.style.visibility = "hidden"; // hide text while cycling
     animationInterval = setInterval(() => {
       animationCount++;
-      // Cycle through TEAM 1 - TEAM 8
+      // Cycle through TEAM 1 - TEAM 8 (text hidden)
       const teamNum = (animationCount % 8) + 1;
       teamSelector.textContent = `TEAM ${teamNum}`;
       if(animationCount >= maxAnimationCycles) {
@@ -233,6 +331,7 @@
         // Pick a random final team
         const finalTeam = Math.floor(Math.random() * 8) + 1;
         teamSelector.textContent = `TEAM ${finalTeam}`;
+        teamSelector.style.visibility = "visible"; // show final chosen team
       }
     }, 80);
   }
@@ -258,6 +357,3 @@
 </body>
 </html>
 
-
-</body>
-</html>
