@@ -237,18 +237,25 @@
       "💰Would you take $300,000 if it meant you could never eat your favorite food again?",
       "👮‍♂️Would you snitch on a friend to save yourself from 1 year in prison?",
       "🏠 Is working from home better than in-office?",
-      "🪂 Would you go skydiving if someone else paid?"
+      "🪂 Would you go skydiving if someone else paid?",
+      "😆Can money buy happiness?"
     ];
 
     let currentSlide = 0;
 
     function updateSlide() {
       const question = slides[currentSlide];
-      document.getElementById("roundTitle").innerText = `🟢 Round ${currentSlide + 1} Question`;
+      document.getElementById("roundTitle").innerText = currentSlide === 9 ? `🟣 FINAL ROUND` : `🟢 Round ${currentSlide + 1} Question`;
       document.getElementById("questionText").innerText = question;
       document.getElementById("randomTeam").style.display = "none";
 
-      document.getElementById("rulesText").innerHTML = `
+      document.getElementById("rulesText").innerHTML = currentSlide === 9 ? `
+        ✅ YES ❌ NO<br>
+        (Wait until you are prompted to hold up your sign!)<br>
+        🟩 Majority: (5 or more teams) → WIN 5 TOKENS! ✅<br>
+        🟥 Minority: (3 or less teams) → LOSE 5 TOKENS!❌<br>
+        🤝 Draw (4 vs 4) → 3 RANDOM TEAMS LOSE 5 TOKENS! ❌
+      ` : `
         ✅ YES ❌ NO<br>
         (Wait until you are prompted to hold up your sign!)<br>
         🟩 Majority: (5 or more teams) → SAFE ✅<br>
@@ -274,7 +281,8 @@
     }
 
     function goToFinal() {
-      alert("Final round has been removed.");
+      currentSlide = 9;
+      updateSlide();
     }
 
     function showRandomTeam() {
