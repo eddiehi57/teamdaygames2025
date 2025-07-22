@@ -49,35 +49,9 @@
       margin-bottom: 5px;
     }
 
-    .question-row {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 15px;
-      gap: 20px;
-      flex-wrap: nowrap;
-      max-width: 100%;
-      justify-content: center;
-    }
-
     .question-text {
       font-size: 2.16rem;
-      white-space: nowrap;
-      flex-shrink: 0;
-    }
-
-    .timer-box {
-      background-color: black;
-      border: 2px solid red;
-      color: red;
-      font-size: 2.16rem;
-      font-weight: bold;
-      padding: 8px 20px;
-      border-radius: 8px;
-      min-width: 130px;
-      text-align: center;
-      user-select: none;
-      flex-shrink: 0;
+      margin-bottom: 15px;
     }
 
     .wait-text {
@@ -93,6 +67,27 @@
       margin-left: 5%;
       margin-right: 5%;
       line-height: 1.5;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .rules-text {
+      flex: 1 1 auto;
+    }
+
+    .timer-box {
+      flex: 0 0 auto;
+      background-color: #660000;
+      color: #ff4444;
+      font-size: 2.16rem;
+      font-weight: bold;
+      padding: 8px 20px;
+      border-radius: 10px;
+      user-select: none;
+      min-width: 110px;
+      text-align: center;
     }
 
     .bonus-header {
@@ -158,7 +153,8 @@
 
     .final-controls {
       display: flex;
-      justify-content: space-between;
+      justify-content: center;
+      gap: 10px;
       width: 100%;
       padding: 0 40px;
       margin-top: 20px;
@@ -167,6 +163,10 @@
     .final-button {
       background-color: #2a6be9;
       font-size: 1.32rem;
+    }
+
+    .final-button.restart {
+      background-color: #e67e22;
     }
 
     .end-button {
@@ -234,12 +234,12 @@
     </div>
     <div class="slide-content">
       <div class="round-title" id="roundTitle"></div>
-      <div class="question-row">
-        <div class="question-text" id="questionText"></div>
+      <div class="question-text" id="questionText"></div>
+      <div class="wait-text"><strong>(Wait until you are prompted to hold up your sign!)</strong></div>
+      <div class="rules" id="rulesText">
+        <div class="rules-text" id="rulesMainText"></div>
         <div class="timer-box" id="timerBox">30</div>
       </div>
-      <div class="wait-text"><strong>(Wait until you are prompted to hold up your sign!)</strong></div>
-      <div class="rules" id="rulesText"></div>
       <div id="randomTeam" class="random-result" style="display: none;"></div>
     </div>
 
@@ -251,6 +251,7 @@
 
     <div class="final-controls">
       <button class="final-button" onclick="goToFinal()">FINAL ROUND</button>
+      <button class="final-button restart" onclick="restartGame()">RESTART</button>
     </div>
 
     <a class="end-button" href="https://docs.google.com/presentation/d/1MCtjyIHIbhxjUiumJ57t1W2Ky6_VcrIzFPXeJp3zfFY/present?slide=id.g257a2e89d4a_0_136" target="_blank">END GAME</a>
@@ -272,62 +273,62 @@
     const finalRound = {
       question: "😆Can money buy happiness?",
       rules: `
+        ✅ YES ❌ NO<br>
+        (Wait until you are prompted to hold up your sign!)<br>
         🟩 Majority: (5 or more teams) → WIN 5 TOKENS! ✅<br>
         🟥 Minority: (3 or less teams) → LOSE 5 TOKENS!❌<br>
         🤝 Draw (4 vs 4) → 3 RANDOM TEAMS LOSE 5 TOKENS! ❌
       `
     };
 
-    let currentSlide = -1; // -1 means start screen
+    let currentSlide = -1; // -1 means intro screen
     let timerInterval = null;
-    let timerCount = 30;
-
-    function updateTimer() {
-      const timerBox = document.getElementById('timerBox');
-      if (timerCount <= 0) {
-        clearInterval(timerInterval);
-        timerBox.innerText = '0';
-        return;
-      }
-      timerBox.innerText = timerCount;
-      timerCount--;
-    }
+    let timeLeft = 30;
 
     function startTimer() {
       clearInterval(timerInterval);
-      timerCount = 30;
-      updateTimer();
-      timerInterval = setInterval(updateTimer, 1000);
+      timeLeft = 30;
+      updateTimerDisplay();
+      timerInterval = setInterval(() => {
+        timeLeft--;
+        updateTimerDisplay();
+        if (timeLeft <= 0) {
+          clearInterval(timerInterval);
+        }
+      }, 1000);
+    }
+
+    function updateTimerDisplay() {
+      document.getElementById("timerBox").innerText = timeLeft;
     }
 
     function updateSlide() {
-      const roundTitle = document.getElementById('roundTitle');
-      const questionText = document.getElementById('questionText');
-      const rulesText = document.getElementById('rulesText');
-      const randomTeam = document.getElementById('randomTeam');
-
-      randomTeam.style.display = 'none';
-
       if (currentSlide === -1) {
-        // Start screen
-        document.getElementById('startScreen').classList.remove('hidden');
-        document.getElementById('mainContainer').classList.add('hidden');
+        // Show intro screen
+        document.getElementById("startScreen").classList.remove("hidden");
+        document.getElementById("mainContainer").classList.add("hidden");
         clearInterval(timerInterval);
         return;
-      } else {
-        document.getElementById('startScreen').classList.add('hidden');
-        document.getElementById('mainContainer').classList.remove('hidden');
       }
+
+      document.getElementById("startScreen").classList.add("hidden");
+      document.getElementById("mainContainer").classList.remove("hidden");
+      document.getElementById("randomTeam").style.display = "none";
 
       if (currentSlide === slides.length) {
         // Final round
-        roundTitle.innerText = '🟢 FINAL ROUND Question';
-        questionText.innerText = finalRound.question;
-        rulesText.innerHTML = finalRound.rules;
+        document.getElementById("roundTitle").innerText = `🟢 FINAL ROUND`;
+        document.getElementById("questionText").innerHTML = finalRound.question;
+        document.getElementById("rulesMainText").innerHTML = finalRound.rules;
+        document.getElementById("timerBox").style.display = "block";
+        startTimer();
       } else {
-        roundTitle.innerText = `🟢 Round ${currentSlide + 1} Question`;
-        questionText.innerText = slides[currentSlide];
-        rulesText.innerHTML = `
+        // Regular round
+        document.getElementById("roundTitle").innerText = `🟢 Round ${currentSlide + 1} Question`;
+        document.getElementById("questionText").innerText = slides[currentSlide];
+        document.getElementById("timerBox").style.display = "block";
+
+        document.getElementById("rulesMainText").innerHTML = `
           ✅ YES ❌ NO<br>
           (Wait until you are prompted to hold up your sign!)<br>
           🟩 Majority: (5 or more teams) → SAFE ✅<br>
@@ -336,8 +337,8 @@
           <div class="bonus-header">BONUS BET: Take a Risk or Play It Safe?</div>
           <div class="bonus-desc">(If Risk: A random team wins +1 token AND a random team loses 1 token)</div>
         `;
+        startTimer();
       }
-      startTimer();
     }
 
     function nextSlide() {
@@ -355,7 +356,7 @@
     }
 
     function goToFinal() {
-      currentSlide = slides.length;
+      currentSlide = slides.length; // index after last normal slide
       updateSlide();
     }
 
@@ -368,10 +369,18 @@
 
     function startGame() {
       currentSlide = 0;
-      document.getElementById("startScreen").classList.add("hidden");
-      document.getElementById("mainContainer").classList.remove("hidden");
       updateSlide();
     }
+
+    function restartGame() {
+      clearInterval(timerInterval);
+      currentSlide = -1;
+      document.getElementById("mainContainer").classList.add("hidden");
+      document.getElementById("startScreen").classList.remove("hidden");
+    }
+
+    // Initialize with intro screen visible
+    updateSlide();
   </script>
 </body>
 </html>
