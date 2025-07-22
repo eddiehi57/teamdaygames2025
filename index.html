@@ -25,7 +25,7 @@
     }
 
     .question-header {
-      font-size: 1.32rem; /* 1.1 * 1.2 */
+      font-size: 1.32rem;
       margin-bottom: 10px;
       color: lightgray;
     }
@@ -40,13 +40,13 @@
     }
 
     .round-title {
-      font-size: 2.4rem; /* 2 * 1.2 */
+      font-size: 2.4rem;
       color: #00ff00;
       margin-bottom: 5px;
     }
 
     .question-text {
-      font-size: 2.16rem; /* 1.8 * 1.2 */
+      font-size: 2.16rem;
       margin-bottom: 15px;
     }
 
@@ -59,21 +59,21 @@
 
     .rules {
       text-align: left;
-      font-size: 1.2rem; /* 1 * 1.2 */
+      font-size: 1.2rem;
       margin-left: 5%;
       margin-right: 5%;
       line-height: 1.5;
     }
 
     .bonus-header {
-      font-size: 1.68rem; /* 1.4 * 1.2 */
+      font-size: 1.68rem;
       font-weight: bold;
       margin-top: 25px;
       margin-bottom: 10px;
     }
 
     .bonus-desc {
-      font-size: 1.56rem; /* 1.3 * 1.2 */
+      font-size: 1.56rem;
       font-weight: bold;
     }
 
@@ -93,7 +93,7 @@
       color: white;
       border: 2px solid white;
       padding: 12px 20px;
-      font-size: 1.2rem; /* 1 * 1.2 */
+      font-size: 1.2rem;
       border-radius: 8px;
       cursor: pointer;
       transition: all 0.3s ease;
@@ -117,13 +117,20 @@
       padding: 0;
     }
 
+    .random-box {
+      background-color: red;
+      border: 4px solid #249f9c;
+      padding: 20px;
+      margin-top: 20px;
+      display: none;
+    }
+
     .random-result {
       font-size: 3rem;
       font-weight: bold;
       color: yellow;
       text-shadow: 1px 1px 2px black;
       -webkit-text-stroke: 1px white;
-      margin-top: 10px;
     }
 
     .final-controls {
@@ -136,7 +143,7 @@
 
     .final-button {
       background-color: #2a6be9;
-      font-size: 1.32rem; /* 1.1 * 1.2 */
+      font-size: 1.32rem;
     }
 
     .end-button {
@@ -146,7 +153,7 @@
       background-color: crimson;
       color: white;
       padding: 12px 20px;
-      font-size: 1.14rem; /* 0.95 * 1.2 */
+      font-size: 1.14rem;
       border-radius: 6px;
       text-decoration: none;
       border: 2px solid white;
@@ -157,9 +164,51 @@
       background-color: #b30000;
     }
 
+    /* Decorative border */
+    .animated-border {
+      position: absolute;
+      width: 100%;
+      height: 40px;
+      overflow: hidden;
+      white-space: nowrap;
+      font-size: 1.8rem;
+      text-align: center;
+      z-index: 0;
+    }
+
+    .animated-border span {
+      display: inline-block;
+      padding: 0 8px;
+      animation: scrollShapes 20s linear infinite;
+    }
+
+    .top-border {
+      top: 0;
+    }
+
+    .bottom-border {
+      bottom: 0;
+    }
+
+    .pink { color: #ff0077; }
+    .green { color: #00ff99; }
+
+    @keyframes scrollShapes {
+      from { transform: translateX(100%); }
+      to   { transform: translateX(-100%); }
+    }
   </style>
 </head>
 <body>
+  <div class="animated-border top-border">
+    <span>
+      <span class="pink">■</span><span class="green">▲</span><span class="pink">●</span>
+      <span class="green">■</span><span class="pink">▲</span><span class="green">●</span>
+      <span class="pink">■</span><span class="green">▲</span><span class="pink">●</span>
+      <span class="green">■</span><span class="pink">▲</span><span class="green">●</span>
+    </span>
+  </div>
+
   <div class="container" id="mainContainer">
     <div class="question-header" id="introText">
       YES or NO: Majority Rules! 👥 8 Teams | 🎟️ Token-Based | ✅ Majority Safe | ❌ Minority Loses
@@ -175,7 +224,10 @@
         <div class="bonus-header">BONUS BET: Take a Risk or Play It Safe?</div>
         <div class="bonus-desc">(If Risk: A random team wins +1 token AND a random team loses 1 token)</div>
       </div>
-      <div id="randomTeam" class="random-result" style="display: none;"></div>
+
+      <div class="random-box" id="randomTeamBox">
+        <div class="random-result" id="randomTeam"></div>
+      </div>
     </div>
 
     <div class="buttons">
@@ -189,6 +241,15 @@
     </div>
 
     <a class="end-button" href="https://docs.google.com/presentation/d/1MCtjyIHIbhxjUiumJ57t1W2Ky6_VcrIzFPXeJp3zfFY/present?slide=id.g257a2e89d4a_0_136" target="_blank">END GAME</a>
+  </div>
+
+  <div class="animated-border bottom-border">
+    <span>
+      <span class="green">■</span><span class="pink">▲</span><span class="green">●</span>
+      <span class="pink">■</span><span class="green">▲</span><span class="pink">●</span>
+      <span class="green">■</span><span class="pink">▲</span><span class="green">●</span>
+      <span class="pink">■</span><span class="green">▲</span><span class="pink">●</span>
+    </span>
   </div>
 
   <script>
@@ -212,7 +273,7 @@
       const question = slides[currentSlide];
       document.getElementById("roundTitle").innerText = `🟢 ${currentSlide === 10 ? "FINAL ROUND Question" : "Round " + (currentSlide + 1) + " Question"}`;
       document.getElementById("questionText").innerText = question;
-      document.getElementById("randomTeam").style.display = "none";
+      document.getElementById("randomTeamBox").style.display = "none";
 
       if (currentSlide === 10) {
         document.getElementById("rulesText").innerHTML = `
@@ -254,7 +315,7 @@
       const teamNum = Math.floor(Math.random() * 8) + 1;
       const teamDisplay = document.getElementById("randomTeam");
       teamDisplay.innerText = `TEAM ${teamNum}`;
-      teamDisplay.style.display = "block";
+      document.getElementById("randomTeamBox").style.display = "block";
     }
 
     updateSlide();
