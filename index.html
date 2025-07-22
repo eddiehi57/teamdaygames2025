@@ -1,15 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Team Day Majority Rules</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Majority Rules Game</title>
   <style>
-    body {
+    html, body {
       margin: 0;
+      padding: 0;
       background-color: black;
       color: white;
-      font-family: 'Segoe UI', sans-serif;
+      font-family: Arial, sans-serif;
+      height: 100vh;
+      width: 100vw;
       overflow: hidden;
     }
 
@@ -17,308 +20,177 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      align-items: center;
-      height: 100vh;
+      height: calc(100vh - 40px);
+      width: calc(100vw - 40px);
       padding: 20px;
       box-sizing: border-box;
-      text-align: center;
+      border: 5px solid transparent;
+      position: relative;
     }
 
-    .question-header {
-      font-size: 1.32rem;
-      margin-bottom: 10px;
-      color: lightgray;
-    }
-
-    .slide-content {
-      flex-grow: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      max-width: 90%;
+    .border {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
       width: 100%;
+      box-sizing: border-box;
+      border: 10px dashed #249f9c;
+      pointer-events: none;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
     }
 
-    .round-title {
+    .border span {
+      color: pink;
+      font-size: 1.2rem;
+      margin: 0 4px;
+    }
+
+    .header h1 {
+      font-size: 2.64rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .subtitle {
+      font-size: 0.72rem;
+      color: #ccc;
+    }
+
+    .question-title {
       font-size: 2.4rem;
-      color: #00ff00;
-      margin-bottom: 5px;
+      margin-bottom: 0.2rem;
     }
 
-    .question-text {
-      font-size: 2.16rem;
-      margin-bottom: 15px;
+    .question {
+      font-size: 2.64rem;
+      margin-bottom: 1rem;
     }
 
-    .wait-text {
+    .prompt {
       font-weight: bold;
       color: hotpink;
-      margin-bottom: 20px;
-      font-size: 1.2rem;
+      margin-bottom: 1.5rem;
     }
 
-    .rules {
-      text-align: left;
-      font-size: 1.2rem;
-      margin-left: 5%;
-      margin-right: 5%;
-      line-height: 1.5;
-    }
-
-    .bonus-header {
-      font-size: 1.68rem;
+    .special-risk {
       font-weight: bold;
-      margin-top: 25px;
-      margin-bottom: 10px;
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+      color: #ffcc00;
     }
 
-    .bonus-desc {
+    .instructions {
+      text-align: left;
+      max-width: 700px;
+      margin: 0 auto;
+      font-size: 1.32rem;
+    }
+
+    .bonus-header, .bonus-text {
       font-size: 1.56rem;
       font-weight: bold;
+      margin-top: 1rem;
     }
 
-    .buttons {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 20px;
-      margin-top: 30px;
-    }
-
-    .nav-button,
-    .eightball-button,
-    .final-button {
-      background: linear-gradient(145deg, #4b4b4b, #2b2b2b);
-      color: white;
-      border: 2px solid white;
-      padding: 12px 20px;
-      font-size: 1.2rem;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-
-    .nav-button:hover,
-    .eightball-button:hover,
-    .final-button:hover {
-      background: #555;
-      transform: scale(1.05);
-    }
-
-    .eightball-button {
-      width: 90px;
-      height: 90px;
-      border-radius: 50%;
-      font-size: 2.6rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 0;
-    }
-
-    .random-box {
+    .team-result-box {
+      display: none;
       background-color: red;
       border: 4px solid #249f9c;
       padding: 20px;
-      margin-top: 20px;
-      display: none;
-    }
-
-    .random-result {
-      font-size: 3rem;
-      font-weight: bold;
+      margin: 2rem auto;
+      font-size: 2.8rem;
       color: yellow;
       text-shadow: 1px 1px 2px black;
-      -webkit-text-stroke: 1px white;
+      width: fit-content;
     }
 
-    .final-controls {
+    .magic-button, .nav-button {
+      padding: 0.8rem 1.5rem;
+      font-size: 1.2rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin: 0.5rem;
+    }
+
+    .magic-button {
+      background-color: #ff69b4;
+      font-size: 2.4rem;
+    }
+
+    .nav-controls {
       display: flex;
       justify-content: space-between;
-      width: 100%;
-      padding: 0 40px;
-      margin-top: 20px;
+      align-items: center;
+      margin-top: 1rem;
     }
 
-    .final-button {
-      background-color: #2a6be9;
-      font-size: 1.32rem;
-    }
-
-    .end-button {
-      position: absolute;
-      bottom: 20px;
-      right: 20px;
-      background-color: crimson;
+    .nav-button.prev, .nav-button.next {
+      background-color: #249f9c;
       color: white;
-      padding: 12px 20px;
-      font-size: 1.14rem;
-      border-radius: 6px;
-      text-decoration: none;
-      border: 2px solid white;
-      transition: background 0.3s ease;
     }
 
-    .end-button:hover {
-      background-color: #b30000;
+    .nav-button.final {
+      background-color: orange;
+      color: white;
+      margin-right: auto;
     }
 
-    /* Decorative border */
-    .animated-border {
-      position: absolute;
-      width: 100%;
-      height: 40px;
-      overflow: hidden;
-      white-space: nowrap;
-      font-size: 1.8rem;
-      text-align: center;
-      z-index: 0;
-    }
-
-    .animated-border span {
-      display: inline-block;
-      padding: 0 8px;
-      animation: scrollShapes 20s linear infinite;
-    }
-
-    .top-border {
-      top: 0;
-    }
-
-    .bottom-border {
-      bottom: 0;
-    }
-
-    .pink { color: #ff0077; }
-    .green { color: #00ff99; }
-
-    @keyframes scrollShapes {
-      from { transform: translateX(100%); }
-      to   { transform: translateX(-100%); }
+    .nav-button.end {
+      background-color: red;
+      color: white;
+      margin-left: auto;
     }
   </style>
 </head>
 <body>
-  <div class="animated-border top-border">
-    <span>
-      <span class="pink">■</span><span class="green">▲</span><span class="pink">●</span>
-      <span class="green">■</span><span class="pink">▲</span><span class="green">●</span>
-      <span class="pink">■</span><span class="green">▲</span><span class="pink">●</span>
-      <span class="green">■</span><span class="pink">▲</span><span class="green">●</span>
-    </span>
-  </div>
-
-  <div class="container" id="mainContainer">
-    <div class="question-header" id="introText">
-      YES or NO: Majority Rules! 👥 8 Teams | 🎟️ Token-Based | ✅ Majority Safe | ❌ Minority Loses
+  <div class="container">
+    <div class="border">
+      <span>□</span><span>△</span><span>●</span><span>□</span><span>△</span><span>●</span>
     </div>
-    <div class="slide-content">
-      <div class="round-title" id="roundTitle">🟢 Round 1 Question</div>
-      <div class="question-text" id="questionText">📱 Are Samsung phones better than Apple phones?</div>
-      <div class="wait-text"><strong>(Wait until you are prompted to hold up your sign!)</strong></div>
-      <div class="rules" id="rulesText">
-        🟩 Majority: (5 or more teams) → SAFE ✅<br>
-        🟥 Minority: (3 or less teams) → LOSE 1 Token ❌<br>
-        🤝 Draw (4 vs 4) = Everyone SAFE<br>
-        <div class="bonus-header">BONUS BET: Take a Risk or Play It Safe?</div>
-        <div class="bonus-desc">(If Risk: A random team wins +1 token AND a random team loses 1 token)</div>
+
+    <div class="header">
+      <h1 class="question-title">Round 1: Question</h1>
+      <div class="question">🐶 Are dogs better than cats?</div>
+    </div>
+
+    <div class="main">
+      <div class="prompt">(Wait until you are prompted to hold up your sign!)</div>
+      <div class="special-risk">SPECIAL RISK</div>
+      <div class="instructions">
+        BONUS BET: Take a Risk or Play It Safe?<br>
+        <span class="bonus-text">(If Risk: A random team wins +1 token AND a random team loses 1 token)</span><br>
+        🔢 Majority Safe<br>
+        ❌ Minority Loses a Token<br>
+        ❓ If Draw: THREE RANDOM TEAMS LOSE 5 TOKENS
       </div>
-
-      <div class="random-box" id="randomTeamBox">
-        <div class="random-result" id="randomTeam"></div>
-      </div>
+      <div class="team-result-box" id="teamResult">TEAM 3</div>
+      <button class="magic-button" onclick="showTeam()">🔮</button>
     </div>
 
-    <div class="buttons">
-      <button class="nav-button" onclick="prevSlide()">Previous</button>
-      <button class="eightball-button" onclick="showRandomTeam()">🎱</button>
-      <button class="nav-button" onclick="nextSlide()">Next</button>
+    <div class="nav-controls">
+      <button class="nav-button final" onclick="goToFinal()">FINAL ROUND</button>
+      <button class="nav-button prev">Previous</button>
+      <button class="nav-button next">Next</button>
+      <button class="nav-button end" onclick="window.location.href='https://docs.google.com/presentation/d/1MCtjyIHIbhxjUiumJ57t1W2Ky6_VcrIzFPXeJp3zfFY/present?slide=id.g257a2e89d4a_0_136'">END GAME</button>
     </div>
-
-    <div class="final-controls">
-      <button class="final-button" onclick="goToFinal()">FINAL ROUND</button>
-    </div>
-
-    <a class="end-button" href="https://docs.google.com/presentation/d/1MCtjyIHIbhxjUiumJ57t1W2Ky6_VcrIzFPXeJp3zfFY/present?slide=id.g257a2e89d4a_0_136" target="_blank">END GAME</a>
-  </div>
-
-  <div class="animated-border bottom-border">
-    <span>
-      <span class="green">■</span><span class="pink">▲</span><span class="green">●</span>
-      <span class="pink">■</span><span class="green">▲</span><span class="pink">●</span>
-      <span class="green">■</span><span class="pink">▲</span><span class="green">●</span>
-      <span class="pink">■</span><span class="green">▲</span><span class="pink">●</span>
-    </span>
   </div>
 
   <script>
-    const slides = [
-      "📱 Are Samsung phones better than Apple phones?",
-      "🍍 Is pineapple on pizza okay?",
-      "👽 Do aliens exist?",
-      "📱⚖️Is social media more harmful than helpful?",
-      "⏳ Would you time travel to the past if you couldn’t return?",
-      "🏠 Is working from home better than in-office?",
-      "✈️ Is it okay to recline your airplane seat?",
-      "🪂 Would you go skydiving if someone paid?",
-      "🚿Should you shower at night instead of the morning?",
-      "🏖️📅Would you give up vacations for the next 5 years to retire 10 years early?",
-      "🐶 Are dogs better than cats?"
-    ];
-
-    let currentSlide = 0;
-
-    function updateSlide() {
-      const question = slides[currentSlide];
-      document.getElementById("roundTitle").innerText = `🟢 ${currentSlide === 10 ? "FINAL ROUND Question" : "Round " + (currentSlide + 1) + " Question"}`;
-      document.getElementById("questionText").innerText = question;
-      document.getElementById("randomTeamBox").style.display = "none";
-
-      if (currentSlide === 10) {
-        document.getElementById("rulesText").innerHTML = `
-          🟩 Majority: (5 or more teams) → WIN 5 TOKENS! ✅<br>
-          🟥 Minority: (3 or less teams) → LOSE 5 TOKENS! ❌<br>
-          🤝 Draw (4 vs 4) → ALL LOSE 5 TOKENS! ❌
-        `;
-      } else {
-        document.getElementById("rulesText").innerHTML = `
-          🟩 Majority: (5 or more teams) → SAFE ✅<br>
-          🟥 Minority: (3 or less teams) → LOSE 1 Token ❌<br>
-          🤝 Draw (4 vs 4) = Everyone SAFE<br>
-          <div class="bonus-header">BONUS BET: Take a Risk or Play It Safe?</div>
-          <div class="bonus-desc">(If Risk: A random team wins +1 token AND a random team loses 1 token)</div>
-        `;
-      }
-    }
-
-    function nextSlide() {
-      if (currentSlide < slides.length - 1) {
-        currentSlide++;
-        updateSlide();
-      }
-    }
-
-    function prevSlide() {
-      if (currentSlide > 0) {
-        currentSlide--;
-        updateSlide();
-      }
+    function showTeam() {
+      const teamResult = document.getElementById('teamResult');
+      const teamNumber = Math.floor(Math.random() * 8) + 1;
+      teamResult.textContent = `TEAM ${teamNumber}`;
+      teamResult.style.display = 'block';
     }
 
     function goToFinal() {
-      currentSlide = 10;
-      updateSlide();
+      alert("Navigating to Final Round... (Replace this with actual logic if needed)");
     }
-
-    function showRandomTeam() {
-      const teamNum = Math.floor(Math.random() * 8) + 1;
-      const teamDisplay = document.getElementById("randomTeam");
-      teamDisplay.innerText = `TEAM ${teamNum}`;
-      document.getElementById("randomTeamBox").style.display = "block";
-    }
-
-    updateSlide();
   </script>
 </body>
 </html>
