@@ -1,205 +1,263 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Squid Game Landing</title>
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      font-family: Arial, sans-serif;
-      overflow: hidden;
-    }
-
-    body {
-      background: url('tdmainpage.jpg') no-repeat center center fixed;
-      background-size: cover;
-      position: relative;
-    }
-
-    .thumbnail-container {
-      position: absolute;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      gap: 40px;
-      z-index: 5;
-    }
-
-    .thumbnail-link {
-      width: 220px;
-      height: 140px;
-      border: 3px solid #fff;
-      border-radius: 10px;
-      overflow: hidden;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-      transition: transform 0.3s;
-      cursor: pointer;
-    }
-
-    .thumbnail-link:hover {
-      transform: scale(1.05);
-    }
-
-    .thumbnail-link img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-
-    .sound-toggle {
-      position: absolute;
-      bottom: 20px;
-      right: 20px;
-      background-color: rgba(0, 0, 0, 0.6);
-      color: white;
-      border: none;
-      padding: 10px 16px;
-      border-radius: 20px;
-      cursor: pointer;
-      font-size: 16px;
-      z-index: 10;
-    }
-
-    .bridge-controls {
-      display: none; /* hidden initially */
-      position: absolute;
-      bottom: 40px;
-      left: 50%;
-      transform: translateX(-50%);
-      gap: 20px;
-      z-index: 10;
-      display: flex;
-    }
-
-    .bridge-controls.hidden {
-      display: none;
-    }
-
-    .bridge-controls button {
-      padding: 12px 24px;
-      font-size: 18px;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      background-color: rgba(0, 0, 0, 0.7);
-      color: white;
-      transition: background-color 0.3s;
-    }
-
-    .bridge-controls button:hover {
-      background-color: rgba(255, 255, 255, 0.9);
-      color: black;
-    }
-
-    #step-message {
-      display: none;
-      position: absolute;
-      top: 40%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 90px; /* increased from 60px */
-      font-weight: bold;
-      color: hotpink;
-      z-index: 10;
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>YES or NO: Majority Rules!</title>
+<style>
+  body {
+    background-color: #000;
+    color: #fff;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0; padding: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+  }
+  main {
+    flex-grow: 1;
+    padding: 20px;
+    max-width: 900px;
+    margin: auto;
+  }
+  h1, h2 {
+    color: #0ff;
+    text-align: center;
+  }
+  .content {
+    margin: 30px 0;
+    font-size: 1.3rem;
+    line-height: 1.6;
+    text-align: center;
+  }
+  button {
+    background-color: #0ff;
+    border: none;
+    color: #000;
+    font-weight: 700;
+    padding: 12px 24px;
+    margin: 5px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    user-select: none;
+    transition: background-color 0.3s ease;
+  }
+  button:hover {
+    background-color: #0cc;
+  }
+  .nav-buttons {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  .team-selector {
+    margin-top: 30px;
+    font-size: 2rem;
+    font-weight: 900;
+    letter-spacing: 0.15em;
+    user-select: none;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #ff0;
+  }
+  .footer {
+    text-align: center;
+    padding: 10px 0;
+    font-size: 0.9rem;
+    color: #555;
+  }
+</style>
 </head>
 <body>
+<main>
+  <h1>YES or NO: Majority Rules! 🎲</h1>
 
-  <!-- Thumbnails Centered -->
-  <div class="thumbnail-container" id="thumbnailContainer">
-    <!-- Red Light Green Light -->
-    <a href="https://eddiehi57.github.io/red-light-green-light/" target="_blank" class="thumbnail-link">
-      <img src="redlightthumb.jpg" alt="Red Light Green Light" />
-    </a>
+  <div id="slide-container" class="content"></div>
 
-    <!-- Mingle Game -->
-    <a href="https://eddiehi57.github.io/minglegame/" target="_blank" class="thumbnail-link">
-      <img src="minglethumb.jpg" alt="Mingle Game" />
-    </a>
+  <div class="team-selector" id="team-selector">TEAM 1</div>
 
-    <!-- Bridge Game (Triggers Background Change) -->
-    <div class="thumbnail-link" onclick="enterBridgeMode()">
-      <img src="bridgepage.jpg" alt="Bridge Game" />
-    </div>
+  <div class="nav-buttons">
+    <button id="back-btn" disabled>⬅️ Back</button>
+    <button id="random-team-btn">🎱 Pick Random Team</button>
+    <button id="next-btn">Next ➡️</button>
   </div>
-
-  <!-- Bridge Controls -->
-  <div class="bridge-controls hidden" id="bridgeControls">
-    <button onclick="playStep()">STEP</button>
-    <button onclick="exitBridgeMode()">MAIN PAGE</button>
+  <div class="nav-buttons">
+    <button id="jump-final-btn">Jump to Final Round 🏁</button>
   </div>
+</main>
 
-  <!-- Step Message -->
-  <div id="step-message">STEP A or B!</div>
+<div class="footer">
+  Made for Team Building | Powered by ChatGPT
+</div>
 
-  <!-- Music Button -->
-  <button class="sound-toggle" onclick="toggleSound()">🔊 Music</button>
+<script>
+  const slides = [
+    {
+      type: "rules",
+      title: "How to Play",
+      content: `
+      <p>🎯 <strong>Objective:</strong> Stay in the <em>majority</em> by answering YES or NO to each question!</p>
+      <ul style="text-align:left; max-width:600px; margin: auto;">
+        <li>✅ <strong>Majority answer:</strong> Teams in the majority are <strong>SAFE</strong></li>
+        <li>❌ <strong>Minority answer:</strong> Teams in the minority <strong>LOSE 1 TOKEN</strong></li>
+        <li>🤝 If there is a draw (equal YES & NO), everyone is SAFE that round</li>
+        <li>🎰 <strong>Bonus Bet:</strong> Majority teams can choose to <em>Play it Safe</em> or <em>Take a Risk</em> where one random team wins an extra token and another loses one</li>
+        <li>🏁 <strong>Final Round:</strong> Teams can risk 5 tokens for a big win or loss</li>
+      </ul>
+      <p>Use the buttons below to navigate through rounds. Have fun!</p>`
+    },
+    {
+      type: "question",
+      round: 1,
+      question: "Are dogs better than cats? 🐶",
+    },
+    {
+      type: "question",
+      round: 2,
+      question: "Are Samsung phones better than Apple phones? 📱",
+    },
+    {
+      type: "question",
+      round: 3,
+      question: "Do aliens exist? 👽",
+    },
+    {
+      type: "question",
+      round: 4,
+      question: "Would you rather fly than be invisible? 🦸‍♀️",
+    },
+    {
+      type: "question",
+      round: 5,
+      question: "Is cereal a soup? 🥣",
+    },
+    {
+      type: "question",
+      round: 6,
+      question: "Is pineapple on pizza okay? 🍍",
+    },
+    {
+      type: "question",
+      round: 7,
+      question: "Would you survive a zombie apocalypse? 🧟",
+    },
+    {
+      type: "question",
+      round: 8,
+      question: "Would you eat a bug for $1,000? 🐛",
+    },
+    {
+      type: "question",
+      round: 9,
+      question: "Is a hot dog a sandwich? 🌭",
+    },
+    {
+      type: "question",
+      round: 10,
+      question: "Would you time travel to the past if you couldn’t return? ⏳",
+    },
+    {
+      type: "final",
+      round: 11,
+      question: "Would you rather explore space than the deep ocean? 🌌",
+      finalRules: `
+      <p>🏁 <strong>Final Round Rules:</strong></p>
+      <ul style="text-align:left; max-width:600px; margin: auto;">
+        <li>Teams may <strong>risk 5 tokens</strong> for this final YES/NO vote</li>
+        <li>If you are in the majority, you <strong>gain 5 tokens</strong></li>
+        <li>If you are in the minority, you <strong>lose 5 tokens</strong></li>
+      </ul>
+      <p>Use this round to make your biggest strategic move!</p>
+      `
+    }
+  ];
 
-  <!-- Audio Files -->
-  <audio id="background-audio" loop>
-    <source src="bckgroundmusic.mp3" type="audio/mpeg" />
-  </audio>
+  let currentIndex = 0;
+  const slideContainer = document.getElementById("slide-container");
+  const backBtn = document.getElementById("back-btn");
+  const nextBtn = document.getElementById("next-btn");
+  const randomTeamBtn = document.getElementById("random-team-btn");
+  const jumpFinalBtn = document.getElementById("jump-final-btn");
+  const teamSelector = document.getElementById("team-selector");
 
-  <audio id="step-audio">
-    <source src="stepsound.mp3" type="audio/mpeg" />
-  </audio>
+  // For random team animation
+  let animationInterval = null;
+  let animationCount = 0;
+  const maxAnimationCycles = 30;
 
-  <script>
-    let isPlaying = false;
+  function renderSlide(index) {
+    currentIndex = index;
+    const slide = slides[index];
+    backBtn.disabled = index === 0;
+    nextBtn.disabled = index === slides.length - 1;
 
-    function toggleSound() {
-      const audio = document.getElementById('background-audio');
-      if (isPlaying) {
-        audio.pause();
-      } else {
-        audio.play();
+    if (slide.type === "rules") {
+      slideContainer.innerHTML = `<h2>${slide.title}</h2>${slide.content}`;
+      teamSelector.style.visibility = "hidden";
+      randomTeamBtn.disabled = true;
+    } else if (slide.type === "question") {
+      slideContainer.innerHTML = `
+        <h2>🟢 Round ${slide.round}</h2>
+        <p style="font-size:1.8rem; margin: 20px 0;">🤔 ${slide.question}</p>
+        <p style="font-size:1.5rem; margin-top:40px;">✅ YES or ❌ NO</p>
+      `;
+      teamSelector.style.visibility = "visible";
+      randomTeamBtn.disabled = false;
+    } else if (slide.type === "final") {
+      slideContainer.innerHTML = `
+        <h2>🏁 Final Round</h2>
+        <p style="font-size:1.8rem; margin: 20px 0;">🤔 ${slide.question}</p>
+        <div style="margin-top:30px; font-size:1.3rem;">${slide.finalRules}</div>
+        <p style="font-size:1.5rem; margin-top:40px;">✅ YES or ❌ NO</p>
+      `;
+      teamSelector.style.visibility = "visible";
+      randomTeamBtn.disabled = false;
+    }
+    teamSelector.textContent = "TEAM 1";
+  }
+
+  function animateRandomTeam() {
+    if(animationInterval) return; // Prevent multiple clicks
+    animationCount = 0;
+    animationInterval = setInterval(() => {
+      animationCount++;
+      // Cycle through TEAM 1 - TEAM 8
+      const teamNum = (animationCount % 8) + 1;
+      teamSelector.textContent = `TEAM ${teamNum}`;
+      if(animationCount >= maxAnimationCycles) {
+        clearInterval(animationInterval);
+        animationInterval = null;
+        // Pick a random final team
+        const finalTeam = Math.floor(Math.random() * 8) + 1;
+        teamSelector.textContent = `TEAM ${finalTeam}`;
       }
-      isPlaying = !isPlaying;
-    }
+    }, 80);
+  }
 
-    function enterBridgeMode() {
-      // Change background
-      document.body.style.backgroundImage = "url('bridgepage.jpg')";
+  backBtn.addEventListener("click", () => {
+    if (currentIndex > 0) renderSlide(currentIndex - 1);
+  });
 
-      // Hide thumbnails
-      document.getElementById('thumbnailContainer').style.display = 'none';
+  nextBtn.addEventListener("click", () => {
+    if (currentIndex < slides.length - 1) renderSlide(currentIndex + 1);
+  });
 
-      // Show bridge controls
-      document.getElementById('bridgeControls').classList.remove('hidden');
+  randomTeamBtn.addEventListener("click", animateRandomTeam);
 
-      // Hide step message if open
-      document.getElementById('step-message').style.display = 'none';
-    }
+  jumpFinalBtn.addEventListener("click", () => {
+    const finalIndex = slides.findIndex(s => s.type === "final");
+    if(finalIndex >= 0) renderSlide(finalIndex);
+  });
 
-    function exitBridgeMode() {
-      // Restore main background
-      document.body.style.backgroundImage = "url('tdmainpage.jpg')";
+  // Initial render
+  renderSlide(0);
+</script>
+</body>
+</html>
 
-      // Show thumbnails
-      document.getElementById('thumbnailContainer').style.display = 'flex';
-
-      // Hide bridge controls and message
-      document.getElementById('bridgeControls').classList.add('hidden');
-      document.getElementById('step-message').style.display = 'none';
-    }
-
-    function playStep() {
-      const stepAudio = document.getElementById('step-audio');
-      const msg = document.getElementById('step-message');
-      stepAudio.currentTime = 0;
-      stepAudio.play();
-      msg.style.display = 'block';
-      setTimeout(() => {
-        msg.style.display = 'none';
-      }, 2000);
-    }
-  </script>
 
 </body>
 </html>
