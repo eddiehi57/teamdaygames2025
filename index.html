@@ -49,9 +49,35 @@
       margin-bottom: 5px;
     }
 
+    .question-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 15px;
+      gap: 20px;
+      flex-wrap: nowrap;
+      max-width: 100%;
+      justify-content: center;
+    }
+
     .question-text {
       font-size: 2.16rem;
-      margin-bottom: 15px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .timer-box {
+      background-color: black;
+      border: 2px solid red;
+      color: red;
+      font-size: 2.16rem;
+      font-weight: bold;
+      padding: 8px 20px;
+      border-radius: 8px;
+      min-width: 130px;
+      text-align: center;
+      user-select: none;
+      flex-shrink: 0;
     }
 
     .wait-text {
@@ -188,7 +214,7 @@
   </style>
 </head>
 <body>
-  <div class="container" id="startScreen">
+  <div class="container start-screen" id="startScreen">
     <div class="slide-content">
       <h1>Team Day Majority Rules</h1>
       <p>YES or NO: Majority Rules!</p>
@@ -208,7 +234,10 @@
     </div>
     <div class="slide-content">
       <div class="round-title" id="roundTitle"></div>
-      <div class="question-text" id="questionText"></div>
+      <div class="question-row">
+        <div class="question-text" id="questionText"></div>
+        <div class="timer-box" id="timerBox">30</div>
+      </div>
       <div class="wait-text"><strong>(Wait until you are prompted to hold up your sign!)</strong></div>
       <div class="rules" id="rulesText"></div>
       <div id="randomTeam" class="random-result" style="display: none;"></div>
@@ -237,37 +266,82 @@
       "💰Would you take $300,000 if it meant you could never eat your favorite food again?",
       "👮‍♂️Would you snitch on a friend to save yourself from 1 year in prison?",
       "🏠 Is working from home better than in-office?",
-      "🪂 Would you go skydiving if someone else paid?",
-      "😆Can money buy happiness?"
+      "🪂 Would you go skydiving if someone else paid?"
     ];
 
-    let currentSlide = 0;
-
-    function updateSlide() {
-      const question = slides[currentSlide];
-      document.getElementById("roundTitle").innerText = currentSlide === 9 ? `🟣 FINAL ROUND` : `🟢 Round ${currentSlide + 1} Question`;
-      document.getElementById("questionText").innerText = question;
-      document.getElementById("randomTeam").style.display = "none";
-
-      document.getElementById("rulesText").innerHTML = currentSlide === 9 ? `
-        ✅ YES ❌ NO<br>
-        (Wait until you are prompted to hold up your sign!)<br>
+    const finalRound = {
+      question: "😆Can money buy happiness?",
+      rules: `
         🟩 Majority: (5 or more teams) → WIN 5 TOKENS! ✅<br>
         🟥 Minority: (3 or less teams) → LOSE 5 TOKENS!❌<br>
         🤝 Draw (4 vs 4) → 3 RANDOM TEAMS LOSE 5 TOKENS! ❌
-      ` : `
-        ✅ YES ❌ NO<br>
-        (Wait until you are prompted to hold up your sign!)<br>
-        🟩 Majority: (5 or more teams) → SAFE ✅<br>
-        🟥 Minority: (3 or less teams) → LOSE 1 Token ❌<br>
-        🤝 Draw (4 vs 4) = Everyone SAFE<br>
-        <div class="bonus-header">BONUS BET: Take a Risk or Play It Safe?</div>
-        <div class="bonus-desc">(If Risk: A random team wins +1 token AND a random team loses 1 token)</div>
-      `;
+      `
+    };
+
+    let currentSlide = -1; // -1 means start screen
+    let timerInterval = null;
+    let timerCount = 30;
+
+    function updateTimer() {
+      const timerBox = document.getElementById('timerBox');
+      if (timerCount <= 0) {
+        clearInterval(timerInterval);
+        timerBox.innerText = '0';
+        return;
+      }
+      timerBox.innerText = timerCount;
+      timerCount--;
+    }
+
+    function startTimer() {
+      clearInterval(timerInterval);
+      timerCount = 30;
+      updateTimer();
+      timerInterval = setInterval(updateTimer, 1000);
+    }
+
+    function updateSlide() {
+      const roundTitle = document.getElementById('roundTitle');
+      const questionText = document.getElementById('questionText');
+      const rulesText = document.getElementById('rulesText');
+      const randomTeam = document.getElementById('randomTeam');
+
+      randomTeam.style.display = 'none';
+
+      if (currentSlide === -1) {
+        // Start screen
+        document.getElementById('startScreen').classList.remove('hidden');
+        document.getElementById('mainContainer').classList.add('hidden');
+        clearInterval(timerInterval);
+        return;
+      } else {
+        document.getElementById('startScreen').classList.add('hidden');
+        document.getElementById('mainContainer').classList.remove('hidden');
+      }
+
+      if (currentSlide === slides.length) {
+        // Final round
+        roundTitle.innerText = '🟢 FINAL ROUND Question';
+        questionText.innerText = finalRound.question;
+        rulesText.innerHTML = finalRound.rules;
+      } else {
+        roundTitle.innerText = `🟢 Round ${currentSlide + 1} Question`;
+        questionText.innerText = slides[currentSlide];
+        rulesText.innerHTML = `
+          ✅ YES ❌ NO<br>
+          (Wait until you are prompted to hold up your sign!)<br>
+          🟩 Majority: (5 or more teams) → SAFE ✅<br>
+          🟥 Minority: (3 or less teams) → LOSE 1 Token ❌<br>
+          🤝 Draw (4 vs 4) = Everyone SAFE<br>
+          <div class="bonus-header">BONUS BET: Take a Risk or Play It Safe?</div>
+          <div class="bonus-desc">(If Risk: A random team wins +1 token AND a random team loses 1 token)</div>
+        `;
+      }
+      startTimer();
     }
 
     function nextSlide() {
-      if (currentSlide < slides.length - 1) {
+      if (currentSlide < slides.length) {
         currentSlide++;
         updateSlide();
       }
@@ -281,7 +355,7 @@
     }
 
     function goToFinal() {
-      currentSlide = 9;
+      currentSlide = slides.length;
       updateSlide();
     }
 
@@ -293,6 +367,7 @@
     }
 
     function startGame() {
+      currentSlide = 0;
       document.getElementById("startScreen").classList.add("hidden");
       document.getElementById("mainContainer").classList.remove("hidden");
       updateSlide();
