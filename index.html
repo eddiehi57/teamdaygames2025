@@ -6,197 +6,174 @@
   <title>Team Day Majority Rules</title>
   <style>
     body {
+      font-family: Arial, sans-serif;
+      background-color: #f7f7f7;
+      color: #333;
       margin: 0;
       padding: 0;
-      font-family: Arial, sans-serif;
-      background-color: #111;
-      color: #fff;
-      text-align: center;
+      overflow-x: hidden;
     }
-
     .container {
-      padding: 20px;
-      max-width: 900px;
+      max-width: 800px;
       margin: auto;
-    }
-
-    .border {
-      border: 6px solid #fff;
       padding: 20px;
-      margin-top: 30px;
-      position: relative;
     }
-
-    h1 {
-      font-size: 2.2rem;
-      margin-bottom: 10px;
-    }
-
-    .instructions {
-      font-size: 1.1rem;
-      line-height: 1.8;
-      margin-bottom: 20px;
-    }
-
-    button {
-      padding: 15px 30px;
-      font-size: 1.2rem;
-      margin: 20px 10px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      background-color: #249f9c;
-      color: white;
-      transition: background 0.3s;
-    }
-
-    button:hover {
-      background-color: #1b7e7b;
-    }
-
-    .hidden {
+    .screen {
       display: none;
     }
-
-    .round {
-      margin-top: 30px;
-      font-size: 1.2rem;
-      text-align: left;
+    .active {
+      display: block;
     }
-
-    .round h2 {
-      color: #00ff9f;
-      font-size: 1.6rem;
+    h1, h2, h3, h4, h5 {
+      margin: 10px 0;
     }
-
-    .eight-ball {
-      font-size: 3rem;
-      margin: 10px;
+    .round-title {
+      font-size: 1.8em;
+      color: green;
     }
-
-    .random-box {
+    .question {
+      font-size: 1.5em;
+      margin: 15px 0;
+    }
+    .result-box {
       background-color: red;
-      color: yellow;
-      border: 4px solid #249f9c;
+      border: 3px solid #249f9c;
       padding: 10px;
-      margin: 10px auto;
-      width: fit-content;
-      font-size: 1.5rem;
+      margin: 15px 0;
+      color: #fff;
+      font-size: 1.5em;
+      text-align: center;
       font-weight: bold;
-      text-shadow: 1px 1px 1px #000;
     }
-
-    .decorative-border {
+    .buttons {
       display: flex;
-      justify-content: center;
+      justify-content: space-around;
+      margin-top: 20px;
       flex-wrap: wrap;
-      gap: 5px;
-      margin: 20px 0;
+      gap: 10px;
     }
-
-    .decorative-border span {
-      font-size: 1.5rem;
-      border: 2px solid;
-      border-radius: 4px;
-      padding: 4px 8px;
-      color: inherit;
+    button {
+      padding: 12px 18px;
+      font-size: 1em;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
     }
-
-    .pink { border-color: #ff007f; color: #ff007f; }
-    .green { border-color: #00ff9f; color: #00ff9f; }
+    .next-btn { background-color: #28a745; color: #fff; }
+    .prev-btn { background-color: #007bff; color: #fff; }
+    .final-btn { background-color: #ffc107; color: #000; }
+    .end-btn { background-color: #dc3545; color: #fff; }
+    .eight-ball {
+      font-size: 2.2em;
+      background: none;
+    }
+    .start-btn {
+      background-color: #000;
+      color: #fff;
+      font-size: 1.2em;
+      padding: 15px;
+    }
+    .landing {
+      text-align: center;
+      padding: 20px;
+    }
+    .landing h1 {
+      font-size: 2em;
+    }
+    .landing p {
+      font-size: 1.1em;
+      margin-bottom: 10px;
+    }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div id="landing" class="border">
+<div class="container">
+  <div id="landing" class="screen active">
+    <div class="landing">
       <h1>Team Day Majority Rules</h1>
-      <p class="instructions">
-        YES or NO: Majority Rules!<br>
-        👥 8 Teams | 🎟️ Token-Based | ✅ Majority Safe | ❌ Minority Loses
-      </p>
-      <p class="instructions">
-        <strong>How to Play:</strong><br>
-        Each round: YES or NO vote<br><br>
-        Majority = SAFE ✅<br>
-        Minority = LOSE 1 Token ❌<br>
-        Draw (4 vs 4) = Everyone SAFE 🤝<br><br>
-        <strong>Bonus Bet (Majority only):</strong><br>
-        Play It Safe 😇 = No change<br>
-        Take a Risk 🎰 = Random team +1 token, another -1 token<br><br>
-        <strong>Note: FINAL ROUND IS DIFFERENT</strong>
-      </p>
-      <button onclick="startGame()">Start Game</button>
-    </div>
-
-    <div id="game" class="hidden">
-      <div class="decorative-border">
-        <span class="pink">□</span><span class="green">△</span><span class="pink">○</span><span class="green">□</span><span class="pink">△</span><span class="green">○</span>
-      </div>
-      <div id="roundContainer" class="round border"></div>
-      <div>
-        <button onclick="prevRound()">Previous</button>
-        <span class="eight-ball" onclick="pickRandomTeam()">🎱</span>
-        <button onclick="nextRound()">Next</button>
-        <button onclick="goToFinalRound()">FINAL ROUND</button>
-        <button onclick="endGame()">END GAME</button>
-      </div>
-      <div id="randomResult" class="random-box hidden"></div>
+      <p><strong>YES or NO: Majority Rules!</strong></p>
+      <p>👥 8 Teams | 🎟️ Token-Based | ✅ Majority Safe | ❌ Minority Loses</p>
+      <p><strong>How to Play:</strong></p>
+      <p>Each round: YES or NO vote</p>
+      <p>🟩 Majority = SAFE ✅</p>
+      <p>🟥 Minority = LOSE 1 Token ❌</p>
+      <p>🤝 Draw (4 vs 4) = Everyone SAFE</p>
+      <p><strong>Bonus Bet (Majority only):</strong></p>
+      <p>Play It Safe 😇 = No change</p>
+      <p>Take a Risk 🎰 = Random team +1 token, another -1 token</p>
+      <p><em>Note: FINAL ROUND IS DIFFERENT</em></p>
+      <button class="start-btn" onclick="startGame()">Start</button>
     </div>
   </div>
+  <div id="game" class="screen">
+    <div id="roundDisplay" class="question"></div>
+    <div id="result" class="result-box"></div>
+    <div class="buttons">
+      <button class="prev-btn" onclick="previousRound()">Previous</button>
+      <button class="eight-ball" onclick="randomTeam()">🎱</button>
+      <button class="next-btn" onclick="nextRound()">Next</button>
+    </div>
+    <div class="buttons">
+      <button class="final-btn" onclick="finalRound()">FINAL ROUND</button>
+      <button class="end-btn" onclick="endGame()">END GAME</button>
+    </div>
+  </div>
+</div>
+<script>
+  const rounds = [
+    "🟢 Round 1\nQuestion:\n🐶 Are dogs better than cats?\n✅ YES ❌ NO\n(Wait until you are prompted to hold up your sign!)\n🟩 Majority: (5 or more teams) → SAFE ✅\n🟥 Minority: (3 or less teams) → LOSE 1 Token ❌\n🤝 Draw (4 vs 4) = Everyone SAFE\nAfter Vote:\n🎰 Bonus Bet Time (Majority Teams Vote):\n ✋ Choose: Play It Safe or Take a Risk\n (If Risk: A random team wins +1 token AND a random team loses 1 token)",
+    "🟢 Round 2\nQuestion:\n🍍 Is pineapple on pizza okay?...",
+    "🟢 Round 3\nQuestion:\n📱 Are Samsung phones better than Apple phones?...",
+    "🟢 Round 4\nQuestion:\n👽 Do aliens exist?...",
+    "🟢 Round 5\nQuestion:\n⏳ Would you time travel to the past if you couldn’t return?...",
+    "🟢 Round 6\nQuestion:\n💰Would you take $1 million if it meant you could never eat your favorite food again?...",
+    "🟢 Round 7\nQuestion:\n👮‍♂️Would you snitch on a friend to save yourself from prison?...",
+    "🟢 Round 8\nQuestion:\n🏠 Is working from home better than in-office?...",
+    "🟢 Round 9\nQuestion:\n🪂 Would you go skydiving if someone else paid?...",
+    "🟢 FINAL ROUND (SEE STAKES BELOW)\nQuestion:\n😆Can money buy happiness?\n✅ YES ❌ NO\n(Wait until you are prompted to hold up your sign!)\n🟩 Majority: (5 or more teams) → WIN 5 TOKENS! ✅\n🟥 Minority: (3 or less teams) → LOSE 5 TOKENS!❌\n🤝 Draw (4 vs 4) → 3 RANDOM TEAMS LOSE 5 TOKENS! ❌"
+  ];
+  let current = 0;
 
-  <script>
-    const rounds = [
-      "<h2>🟢 Round 1</h2><strong>Question:</strong><br>🐶 Are dogs better than cats?<br>✅ YES ❌ NO<br>(Wait until you are prompted to hold up your sign!)<br>🟩 Majority: (5 or more teams) → SAFE ✅<br>🟥 Minority: (3 or less teams) → LOSE 1 Token ❌<br>🤝 Draw (4 vs 4) = Everyone SAFE<br><strong>After Vote:</strong><br>🎰 Bonus Bet Time (Majority Teams Vote):<br>✋ Choose: Play It Safe or Take a Risk<br>(If Risk: A random team wins +1 token AND a random team loses 1 token)",
+  function startGame() {
+    document.getElementById('landing').classList.remove('active');
+    document.getElementById('game').classList.add('active');
+    showRound();
+  }
 
-      "<h2>🟢 Round 2</h2><strong>Question:</strong><br>🍍 Is pineapple on pizza okay?...",
+  function showRound() {
+    document.getElementById('roundDisplay').textContent = rounds[current];
+    document.getElementById('result').textContent = '';
+  }
 
-      // Repeat this format for Rounds 3–9 and FINAL ROUND...
-
-      "<h2>🟢 FINAL ROUND</h2><strong>Question:</strong><br>😆 Can money buy happiness?<br>✅ YES ❌ NO<br>(Wait until you are prompted to hold up your sign!)<br>🟩 Majority: (5 or more teams) → WIN 5 TOKENS! ✅<br>🟥 Minority: (3 or less teams) → LOSE 5 TOKENS! ❌<br>🤝 Draw (4 vs 4) → 3 RANDOM TEAMS LOSE 5 TOKENS! ❌"
-    ];
-
-    let currentRound = 0;
-
-    function startGame() {
-      document.getElementById("landing").classList.add("hidden");
-      document.getElementById("game").classList.remove("hidden");
+  function nextRound() {
+    if (current < rounds.length - 1) {
+      current++;
       showRound();
     }
+  }
 
-    function showRound() {
-      document.getElementById("roundContainer").innerHTML = rounds[currentRound];
-      document.getElementById("randomResult").classList.add("hidden");
-    }
-
-    function nextRound() {
-      if (currentRound < rounds.length - 1) {
-        currentRound++;
-        showRound();
-      }
-    }
-
-    function prevRound() {
-      if (currentRound > 0) {
-        currentRound--;
-        showRound();
-      }
-    }
-
-    function goToFinalRound() {
-      currentRound = rounds.length - 1;
+  function previousRound() {
+    if (current > 0) {
+      current--;
       showRound();
     }
+  }
 
-    function endGame() {
-      location.reload();
-    }
+  function finalRound() {
+    current = rounds.length - 1;
+    showRound();
+  }
 
-    function pickRandomTeam() {
-      const team = Math.ceil(Math.random() * 8);
-      const resultBox = document.getElementById("randomResult");
-      resultBox.textContent = `Random Pick: Team ${team}`;
-      resultBox.classList.remove("hidden");
-    }
-  </script>
+  function endGame() {
+    alert('Game over!');
+    location.reload();
+  }
+
+  function randomTeam() {
+    const team = Math.floor(Math.random() * 8) + 1;
+    document.getElementById('result').textContent = `🎯 Random Team Picked: Team ${team}`;
+  }
+</script>
 </body>
 </html>
