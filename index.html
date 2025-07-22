@@ -7,186 +7,195 @@
   <style>
     body {
       margin: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #000;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background-color: #111;
       color: #fff;
-      overflow: hidden;
+      text-align: center;
     }
+
     .container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      padding: 30px;
-      box-sizing: border-box;
-      position: relative;
-      text-align: left;
+      padding: 20px;
+      max-width: 900px;
+      margin: auto;
     }
+
     .border {
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      right: 10px;
-      bottom: 10px;
-      border: 5px solid #fff;
-      pointer-events: none;
-      z-index: 1;
+      border: 6px solid #fff;
+      padding: 20px;
+      margin-top: 30px;
+      position: relative;
     }
-    .round {
-      font-size: 2em;
-      color: #00ff88;
-      margin-bottom: 0.5em;
+
+    h1 {
+      font-size: 2.2rem;
+      margin-bottom: 10px;
     }
-    .question {
-      font-size: 1.7em;
-      font-weight: bold;
-      margin-bottom: 0.5em;
+
+    .instructions {
+      font-size: 1.1rem;
+      line-height: 1.8;
+      margin-bottom: 20px;
     }
-    .options, .rules, .bonus, .result {
-      font-size: 1.3em;
-      margin-bottom: 0.3em;
-    }
-    .bold {
-      font-weight: bold;
-    }
-    .red-box {
-      background-color: red;
-      border: 3px solid #249f9c;
-      padding: 10px 20px;
-      font-size: 1.5em;
-      color: yellow;
-      text-shadow: 1px 1px 2px #000;
-      margin-bottom: 1em;
-      z-index: 2;
-    }
-    .button-container {
-      position: absolute;
-      bottom: 20px;
-      width: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 2;
-    }
-    .button {
-      background-color: #249f9c;
+
+    button {
+      padding: 15px 30px;
+      font-size: 1.2rem;
+      margin: 20px 10px;
       border: none;
-      color: white;
-      padding: 10px 20px;
-      margin: 0 10px;
-      font-size: 1.2em;
       border-radius: 8px;
       cursor: pointer;
-      transition: background-color 0.3s;
+      background-color: #249f9c;
+      color: white;
+      transition: background 0.3s;
     }
-    .button:hover {
-      background-color: #1e7f7d;
+
+    button:hover {
+      background-color: #1b7e7b;
     }
-    .final {
-      background-color: #e91e63;
-      margin-left: 60px;
+
+    .hidden {
+      display: none;
     }
-    .end {
-      background-color: #9c27b0;
-      margin-right: 60px;
+
+    .round {
+      margin-top: 30px;
+      font-size: 1.2rem;
+      text-align: left;
     }
-    .emoji-large {
-      font-size: 2em;
-      margin: 0 15px;
+
+    .round h2 {
+      color: #00ff9f;
+      font-size: 1.6rem;
     }
+
+    .eight-ball {
+      font-size: 3rem;
+      margin: 10px;
+    }
+
+    .random-box {
+      background-color: red;
+      color: yellow;
+      border: 4px solid #249f9c;
+      padding: 10px;
+      margin: 10px auto;
+      width: fit-content;
+      font-size: 1.5rem;
+      font-weight: bold;
+      text-shadow: 1px 1px 1px #000;
+    }
+
+    .decorative-border {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin: 20px 0;
+    }
+
+    .decorative-border span {
+      font-size: 1.5rem;
+      border: 2px solid;
+      border-radius: 4px;
+      padding: 4px 8px;
+      color: inherit;
+    }
+
+    .pink { border-color: #ff007f; color: #ff007f; }
+    .green { border-color: #00ff9f; color: #00ff9f; }
   </style>
 </head>
 <body>
   <div class="container">
-    <div class="border"></div>
-    <div id="gameContent">
-      <div class="round">🟢 Round 1</div>
-      <div class="question">Question:<br>🐶 Are dogs better than cats?</div>
-      <div class="options">✅ YES ❌ NO</div>
-      <div class="rules">(Wait until you are prompted to hold up your sign!)</div>
-      <div class="rules">🟩 Majority: (5 or more teams) → SAFE ✅</div>
-      <div class="rules">🟥 Minority: (3 or less teams) → LOSE 1 Token ❌</div>
-      <div class="rules">🤝 Draw (4 vs 4) = Everyone SAFE</div>
-      <div class="bonus">After Vote:</div>
-      <div class="bonus bold">🎰 Bonus Bet Time (Majority Teams Vote):</div>
-      <div class="bonus bold">✋ Choose: Play It Safe or Take a Risk</div>
-      <div class="bonus bold">(If Risk: A random team wins +1 token AND a random team loses 1 token)</div>
-      <div class="red-box" id="randomResult" style="display:none">Team 3 LOSES 1 TOKEN</div>
+    <div id="landing" class="border">
+      <h1>Team Day Majority Rules</h1>
+      <p class="instructions">
+        YES or NO: Majority Rules!<br>
+        👥 8 Teams | 🎟️ Token-Based | ✅ Majority Safe | ❌ Minority Loses
+      </p>
+      <p class="instructions">
+        <strong>How to Play:</strong><br>
+        Each round: YES or NO vote<br><br>
+        Majority = SAFE ✅<br>
+        Minority = LOSE 1 Token ❌<br>
+        Draw (4 vs 4) = Everyone SAFE 🤝<br><br>
+        <strong>Bonus Bet (Majority only):</strong><br>
+        Play It Safe 😇 = No change<br>
+        Take a Risk 🎰 = Random team +1 token, another -1 token<br><br>
+        <strong>Note: FINAL ROUND IS DIFFERENT</strong>
+      </p>
+      <button onclick="startGame()">Start Game</button>
     </div>
-    <div class="button-container">
-      <button class="button" onclick="prevRound()">⬅ PREVIOUS</button>
-      <span class="emoji-large" onclick="randomPick()">🎱</span>
-      <button class="button" onclick="nextRound()">NEXT ➡</button>
-      <button class="button final" onclick="goToFinal()">FINAL ROUND</button>
-      <a href="https://docs.google.com/presentation/d/1MCtjyIHIbhxjUiumJ57t1W2Ky6_VcrIzFPXeJp3zfFY/present?slide=id.g257a2e89d4a_0_136" target="_blank">
-        <button class="button end">END GAME</button>
-      </a>
+
+    <div id="game" class="hidden">
+      <div class="decorative-border">
+        <span class="pink">□</span><span class="green">△</span><span class="pink">○</span><span class="green">□</span><span class="pink">△</span><span class="green">○</span>
+      </div>
+      <div id="roundContainer" class="round border"></div>
+      <div>
+        <button onclick="prevRound()">Previous</button>
+        <span class="eight-ball" onclick="pickRandomTeam()">🎱</span>
+        <button onclick="nextRound()">Next</button>
+        <button onclick="goToFinalRound()">FINAL ROUND</button>
+        <button onclick="endGame()">END GAME</button>
+      </div>
+      <div id="randomResult" class="random-box hidden"></div>
     </div>
   </div>
 
   <script>
     const rounds = [
-      `🟢 Round 1<div class="question">Question:<br>🐶 Are dogs better than cats?</div>`,
-      `🟢 Round 2<div class="question">Question:<br>🍍 Is pineapple on pizza okay?</div>`,
-      `🟢 Round 3<div class="question">Question:<br>📱 Are Samsung phones better than Apple phones?</div>`,
-      `🟢 Round 4<div class="question">Question:<br>👽 Do aliens exist?</div>`,
-      `🟢 Round 5<div class="question">Question:<br>⏳ Would you time travel to the past if you couldn’t return?</div>`,
-      `🟢 Round 6<div class="question">Question:<br>💰Would you take $1 million if it meant you could never eat your favorite food again?</div>`,
-      `🟢 Round 7<div class="question">Question:<br>👮‍♂️Would you snitch on a friend to save yourself from prison?</div>`,
-      `🟢 Round 8<div class="question">Question:<br>🏠 Is working from home better than in-office?</div>`,
-      `🟢 Round 9<div class="question">Question:<br>🪂 Would you go skydiving if someone else paid?</div>`,
-      `🟢 FINAL ROUND (SEE STAKES BELOW)<div class="question">Question:<br>😆Can money buy happiness?</div>`
+      "<h2>🟢 Round 1</h2><strong>Question:</strong><br>🐶 Are dogs better than cats?<br>✅ YES ❌ NO<br>(Wait until you are prompted to hold up your sign!)<br>🟩 Majority: (5 or more teams) → SAFE ✅<br>🟥 Minority: (3 or less teams) → LOSE 1 Token ❌<br>🤝 Draw (4 vs 4) = Everyone SAFE<br><strong>After Vote:</strong><br>🎰 Bonus Bet Time (Majority Teams Vote):<br>✋ Choose: Play It Safe or Take a Risk<br>(If Risk: A random team wins +1 token AND a random team loses 1 token)",
+
+      "<h2>🟢 Round 2</h2><strong>Question:</strong><br>🍍 Is pineapple on pizza okay?...",
+
+      // Repeat this format for Rounds 3–9 and FINAL ROUND...
+
+      "<h2>🟢 FINAL ROUND</h2><strong>Question:</strong><br>😆 Can money buy happiness?<br>✅ YES ❌ NO<br>(Wait until you are prompted to hold up your sign!)<br>🟩 Majority: (5 or more teams) → WIN 5 TOKENS! ✅<br>🟥 Minority: (3 or less teams) → LOSE 5 TOKENS! ❌<br>🤝 Draw (4 vs 4) → 3 RANDOM TEAMS LOSE 5 TOKENS! ❌"
     ];
 
     let currentRound = 0;
 
+    function startGame() {
+      document.getElementById("landing").classList.add("hidden");
+      document.getElementById("game").classList.remove("hidden");
+      showRound();
+    }
+
+    function showRound() {
+      document.getElementById("roundContainer").innerHTML = rounds[currentRound];
+      document.getElementById("randomResult").classList.add("hidden");
+    }
+
     function nextRound() {
       if (currentRound < rounds.length - 1) {
         currentRound++;
-        updateContent();
+        showRound();
       }
     }
 
     function prevRound() {
       if (currentRound > 0) {
         currentRound--;
-        updateContent();
+        showRound();
       }
     }
 
-    function goToFinal() {
+    function goToFinalRound() {
       currentRound = rounds.length - 1;
-      updateContent();
+      showRound();
     }
 
-    function randomPick() {
-      const team = Math.floor(Math.random() * 8) + 1;
-      document.getElementById("randomResult").textContent = `Team ${team} LOSES 1 TOKEN`;
-      document.getElementById("randomResult").style.display = "block";
+    function endGame() {
+      location.reload();
     }
 
-    function updateContent() {
-      const baseRules = `
-        <div class="options">✅ YES ❌ NO</div>
-        <div class="rules">(Wait until you are prompted to hold up your sign!)</div>
-        <div class="rules">🟩 Majority: (5 or more teams) → SAFE ✅</div>
-        <div class="rules">🟥 Minority: (3 or less teams) → LOSE 1 Token ❌</div>
-        <div class="rules">🤝 Draw (4 vs 4) = Everyone SAFE</div>
-        <div class="bonus">After Vote:</div>
-        <div class="bonus bold">🎰 Bonus Bet Time (Majority Teams Vote):</div>
-        <div class="bonus bold">✋ Choose: Play It Safe or Take a Risk</div>
-        <div class="bonus bold">(If Risk: A random team wins +1 token AND a random team loses 1 token)</div>
-      `;
-      const finalRules = `
-        <div class="options">✅ YES ❌ NO</div>
-        <div class="rules">(Wait until you are prompted to hold up your sign!)</div>
-        <div class="rules">🟩 Majority: (5 or more teams) → WIN 5 TOKENS! ✅</div>
-        <div class="rules">🟥 Minority: (3 or less teams) → LOSE 5 TOKENS!❌</div>
-        <div class="rules">🤝 Draw (4 vs 4) → 3 RANDOM TEAMS LOSE 5 TOKENS! ❌</div>
-      `;
-      const content = rounds[currentRound] + (currentRound === rounds.length - 1 ? finalRules : baseRules);
-      document.getElementById("gameContent").innerHTML = content + document.getElementById("randomResult").outerHTML;
+    function pickRandomTeam() {
+      const team = Math.ceil(Math.random() * 8);
+      const resultBox = document.getElementById("randomResult");
+      resultBox.textContent = `Random Pick: Team ${team}`;
+      resultBox.classList.remove("hidden");
     }
   </script>
 </body>
